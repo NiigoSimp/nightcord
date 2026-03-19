@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê - Đọc Truyện Online</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="assets/css/dark-mode.css">
+    <style>
+        /* Style Overrides - Chỉ dùng 5 màu đã cho */
+        :root {
+            --bg-color: #f2f2f2;
+            --card-bg: #ffffff;
+            --border-color: #eaeaea;
+            --hover-bg: #f8f9fa;
+            
+            /* 5 màu chính */
+            --primary: #884499;
+            --secondary-1: #BB5688;
+            --secondary-2: #8888CC;
+            --accent-1: #CCAA88;
+            --accent-2: #DDAACC;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Navbar */
+        .main-nav {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            padding: 0.5rem 0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-1) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .nav-link-custom {
+            font-weight: 600;
+            color: #333 !important;
+            padding: 0.5rem 1rem !important;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-link-custom.active {
+            color: var(--primary) !important;
+        }
+        
+        .nav-link-custom.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+            border-radius: 3px 3px 0 0;
+        }
+        
+        /* Dark mode toggle button animation */
+        #darkModeToggle {
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #darkModeToggle:hover {
+            transform: rotate(180deg);
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Stat Cards */
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(136, 68, 153, 0.1);
+            border-color: var(--secondary-2);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-details h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+        
+        .stat-details p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(136, 68, 153, 0.1);
+            border-color: var(--secondary-2);
+        }
+        
+        .card-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+        }
+        
+        .card-header i {
+            margin-right: 8px;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Recent Activities List */
+        .list-group-item {
+            background: transparent;
+            border-color: var(--border-color);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        .list-group-item:hover {
+            background: rgba(136, 136, 204, 0.05);
+        }
+        
+        .list-group-item i {
+            color: var(--secondary-2);
+        }
+        
+        .list-group-item small {
+            color: #888;
+        }
+        
+        /* Footer */
+        .footer {
+            background: white;
+            border-top: 1px solid var(--border-color);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .footer h5 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+        
+        .footer p {
+            color: #666;
+        }
+        
+        .footer ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .footer ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer ul li a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer ul li a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--accent-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Modal */
+        .modal-content {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .modal-footer {
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .modal-header .btn-close {
+            transition: all 0.3s ease;
+        }
+        
+        .modal-header .btn-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        /* Buttons */
+        .btn-outline-secondary {
+            border-color: var(--border-color);
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-secondary:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: #6a3677;
+            border-color: #6a3677;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(136, 68, 153, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+            
+            .stat-details h3 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+   <!-- Navbar -->
+<nav class="navbar navbar-expand-lg main-nav sticky-top">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="assets/img/logo.png" alt="Đọc Truyện Online" height="40" class="me-2">
+            <span class="logo">Nightcord</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="index.html">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom" href="tasks.html">
+                        Kho truyện
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-link-custom active" href="about.html">
+                        Thống kê
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="d-flex align-items-center gap-2">
+                <!-- Dark mode button -->
+                <button class="btn" id="darkModeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <!-- User dropdown -->
+                <div class="dropdown">
+                    <button class="btn rounded-pill px-4" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1)); border: none; color: white;" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-2"></i>Tài khoản
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#registerModal"><i class="fas fa-user-plus me-2"></i>Đăng ký</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <main class="container my-4">
+        <h2 class="mb-4" style="color: var(--primary);">
+            <i class="fas fa-chart-bar me-2"></i>Thống kê kho truyện
+        </h2>
+
+        <!-- Summary Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--primary), var(--secondary-2));">
+                        <i class="fas fa-books"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="statTotal">0</h3>
+                        <p>Tổng số truyện</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--secondary-1), var(--accent-2));">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="statOngoing">0</h3>
+                        <p>Đang tiến hành</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--secondary-2), var(--accent-1));">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="statCompleted">0</h3>
+                        <p>Hoàn thành</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, var(--accent-1), var(--primary));">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3 id="statChapters">0</h3>
+                        <p>Tổng số chương</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header" style="background: var(--secondary-2); color: white;">
+                        <i class="fas fa-chart-pie me-2"></i>Phân bố theo thể loại
+                    </div>
+                    <div class="card-body">
+                        <canvas id="genreChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header" style="background: var(--secondary-1); color: white;">
+                        <i class="fas fa-chart-line me-2"></i>Tiến độ theo tháng
+                    </div>
+                    <div class="card-body">
+                        <canvas id="progressChart" style="height: 300px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="card mt-4">
+            <div class="card-header" style="background: var(--primary); color: white;">
+                <i class="fas fa-history me-2"></i>Hoạt động gần đây
+            </div>
+            <div class="card-body">
+                <div id="recentActivities">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-center" style="background: transparent;">Đang tải...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>Đọc Truyện Online</h5>
+                    <p>Thống kê kho truyện với 5 màu chủ đạo</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Liên kết nhanh</h5>
+                    <ul>
+                        <li><a href="index.html">Trang chủ</a></li>
+                        <li><a href="tasks.html">Kho truyện</a></li>
+                        <li><a href="about.html">Thống kê</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Theo dõi</h5>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <p class="mb-0">© 2024 Đọc Truyện Online - 5 màu: #884499, #BB5688, #8888CC, #CCAA88, #DDAACC</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1));">
+                    <h5 class="modal-title text-white">Đăng nhập</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" placeholder="Nhập tên đăng nhập">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" placeholder="Nhập mật khẩu">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" style="background: var(--primary);">Đăng nhập</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--secondary-2), var(--accent-2));">
+                    <h5 class="modal-title">Đăng ký</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" placeholder="Nhập tên đăng nhập">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Nhập email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" placeholder="Nhập mật khẩu">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" style="background: var(--primary);">Đăng ký</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/statistics.js"></script>
+    <script>
+        $(document).ready(function() {
+            loadStatistics();
+        });
+    </script>
+</body>
+</html>

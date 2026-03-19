@@ -1,0 +1,602 @@
+/* ============================================
+   DARK MODE CSS - Chế độ tối cho website
+   ============================================ */
+
+/* Dark mode variables - Ghi đè lên biến màu sắc */
+body.dark-mode {
+    /* Background colors */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-card: #2d2d2d;
+    --bg-navbar: #2d2d2d;
+    --bg-footer: #2d2d2d;
+    --bg-modal: #2d2d2d;
+    --bg-input: #3d3d3d;
+    --bg-hover: #3d3d3d;
+    
+    /* Text colors */
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+    --text-inverse: #333333;
+    
+    /* Border colors */
+    --border-color: #404040;
+    --border-light: #505050;
+    
+    /* Shadow */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    
+    /* Status colors (giữ nguyên nhưng điều chỉnh độ sáng) */
+    --primary: #9b55ad;      /* Sáng hơn một chút */
+    --secondary-1: #d46a9e;  /* Sáng hơn một chút */
+    --secondary-2: #9a9add;  /* Sáng hơn một chút */
+    --accent-1: #b89670;     /* Tối hơn một chút */
+    --accent-2: #c495b5;     /* Tối hơn một chút */
+}
+
+/* ============================================
+   BACKGROUND & TEXT COLORS
+   ============================================ */
+
+body.dark-mode {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar */
+body.dark-mode .webtoon-nav {
+    background: var(--bg-navbar) !important;
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .webtoon-nav-link {
+    color: var(--text-primary) !important;
+}
+
+body.dark-mode .webtoon-nav-link.active {
+    color: var(--primary) !important;
+}
+
+body.dark-mode .webtoon-nav-link.active::after {
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+}
+
+/* Cards */
+body.dark-mode .webtoon-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+body.dark-mode .webtoon-card:hover {
+    border-color: var(--secondary-2);
+    box-shadow: 0 15px 30px rgba(155, 85, 173, 0.3);
+}
+
+body.dark-mode .webtoon-title {
+    color: var(--text-primary);
+}
+
+body.dark-mode .webtoon-creator {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .webtoon-chapters {
+    color: var(--text-muted);
+}
+
+body.dark-mode .webtoon-rank {
+    background: var(--accent-2);
+    color: var(--text-inverse);
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+/* Task Cards */
+body.dark-mode .task-webtoon-card {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .task-webtoon-card:hover {
+    border-color: var(--secondary-2);
+    box-shadow: 0 10px 20px rgba(155, 85, 173, 0.3);
+}
+
+body.dark-mode .task-title {
+    color: var(--text-primary);
+}
+
+body.dark-mode .task-deadline {
+    color: var(--text-muted);
+}
+
+/* Priority badges - giữ nguyên màu nhưng text trắng */
+body.dark-mode .priority-high {
+    background: var(--primary);
+    color: white;
+}
+
+body.dark-mode .priority-medium {
+    background: var(--secondary-1);
+    color: white;
+}
+
+body.dark-mode .priority-low {
+    background: var(--secondary-2);
+    color: white;
+}
+
+/* Status badges */
+body.dark-mode .status-pending {
+    background: var(--accent-2);
+    color: var(--text-inverse);
+}
+
+body.dark-mode .status-done {
+    background: var(--accent-1);
+    color: var(--text-inverse);
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+
+body.dark-mode .table {
+    color: var(--text-primary);
+    background: var(--bg-card);
+}
+
+body.dark-mode .table thead th {
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--secondary-2));
+}
+
+body.dark-mode .table tbody tr {
+    background: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .table tbody tr:hover {
+    background: var(--bg-hover);
+}
+
+body.dark-mode .table tbody tr.task-done {
+    background: rgba(155, 85, 173, 0.15);
+}
+
+body.dark-mode .table td {
+    border-color: var(--border-color);
+}
+
+/* ============================================
+   FORMS & INPUTS
+   ============================================ */
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: var(--bg-input);
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    background-color: var(--bg-input);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(155, 85, 173, 0.25);
+    color: var(--text-primary);
+}
+
+body.dark-mode .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+body.dark-mode .form-label {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .input-group-text {
+    background-color: var(--bg-input);
+    border-color: var(--border-light);
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+body.dark-mode .btn-outline-secondary {
+    border-color: var(--border-light);
+    color: var(--text-secondary);
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+body.dark-mode .btn-outline-primary {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+body.dark-mode .btn-outline-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+body.dark-mode .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+body.dark-mode .btn-primary:hover {
+    background: #7a3d8a;
+    border-color: #7a3d8a;
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+
+body.dark-mode .modal-content {
+    background-color: var(--bg-modal);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+body.dark-mode .modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+body.dark-mode .modal-footer {
+    border-top-color: var(--border-color);
+}
+
+body.dark-mode .modal-title {
+    color: white;
+}
+
+/* ============================================
+   DROPDOWNS
+   ============================================ */
+
+body.dark-mode .dropdown-menu {
+    background-color: var(--bg-modal);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .dropdown-item {
+    color: var(--text-primary);
+}
+
+body.dark-mode .dropdown-item:hover {
+    background-color: var(--bg-hover);
+    color: var(--primary);
+}
+
+body.dark-mode .dropdown-divider {
+    border-top-color: var(--border-color);
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+
+body.dark-mode .page-link {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .page-link:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+body.dark-mode .page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+body.dark-mode .page-item.disabled .page-link {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+body.dark-mode .footer {
+    background: var(--bg-footer) !important;
+    border-top-color: var(--border-color);
+}
+
+body.dark-mode .footer h5 {
+    color: var(--primary);
+}
+
+body.dark-mode .footer p {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .footer ul li a {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .footer ul li a:hover {
+    color: var(--primary);
+}
+
+/* ============================================
+   SOCIAL LINKS
+   ============================================ */
+
+body.dark-mode .social-links a {
+    background: var(--accent-2);
+    color: var(--text-inverse);
+}
+
+body.dark-mode .social-links a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+
+body.dark-mode .toast {
+    background-color: var(--toast-bg, var(--bg-modal));
+    border-color: var(--border-color);
+}
+
+body.dark-mode .toast-header {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .toast-body {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   CARDS & SECTIONS
+   ============================================ */
+
+body.dark-mode .card {
+    background-color: var(--bg-card);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .card-header {
+    background-color: var(--bg-hover);
+    border-bottom-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+body.dark-mode .card-body {
+    background-color: var(--bg-card);
+}
+
+body.dark-mode .genre-section {
+    background: rgba(45, 45, 45, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+body.dark-mode .section-title {
+    color: var(--text-primary);
+}
+
+body.dark-mode .section-title::before {
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+}
+
+body.dark-mode .section-link {
+    color: var(--secondary-2);
+}
+
+body.dark-mode .section-link:hover {
+    color: var(--primary);
+}
+
+/* ============================================
+   GENRE TAGS
+   ============================================ */
+
+body.dark-mode .genre-tag.romantic {
+    background: var(--primary);
+}
+
+body.dark-mode .genre-tag.fluff {
+    background: var(--secondary-1);
+}
+
+body.dark-mode .genre-tag.angst {
+    background: var(--secondary-2);
+}
+
+body.dark-mode .genre-tag:hover,
+body.dark-mode .genre-tag.active {
+    border-color: white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   BANNER
+   ============================================ */
+
+body.dark-mode .webtoon-banner {
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+}
+
+body.dark-mode .banner-btn {
+    background: white;
+    color: var(--primary);
+}
+
+body.dark-mode .banner-btn:hover {
+    color: var(--secondary-1);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+
+body.dark-mode .alert-info {
+    background: rgba(155, 85, 173, 0.2);
+    border-color: var(--secondary-2);
+    color: var(--text-primary);
+}
+
+body.dark-mode .alert-info .alert-link {
+    color: var(--secondary-2);
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+body.dark-mode #emptyState h4 {
+    color: var(--secondary-2);
+}
+
+body.dark-mode #emptyState p {
+    color: var(--text-secondary);
+}
+
+body.dark-mode #emptyState img {
+    opacity: 0.8;
+}
+
+/* ============================================
+   PAGINATION INFO
+   ============================================ */
+
+body.dark-mode #showingInfo {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   ACTIVE FILTERS
+   ============================================ */
+
+body.dark-mode #activeFilters {
+    color: var(--text-secondary);
+}
+
+body.dark-mode #activeFilters .badge {
+    color: white;
+}
+
+/* ============================================
+   LOADING SKELETON
+   ============================================ */
+
+body.dark-mode .skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--border-color) 25%,
+        var(--accent-2) 50%,
+        var(--border-color) 75%
+    );
+}
+
+/* ============================================
+   SCROLLBAR (Tùy chọn)
+   ============================================ */
+
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 5px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-2);
+}
+
+/* ============================================
+   TRANSITIONS
+   ============================================ */
+
+body.dark-mode,
+body.dark-mode *,
+body.dark-mode *::before,
+body.dark-mode *::after {
+    transition: background-color 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease,
+                box-shadow 0.3s ease,
+                opacity 0.3s ease;
+}
+
+/* ============================================
+   DARK MODE TOGGLE BUTTON ANIMATION
+   ============================================ */
+
+#darkModeToggle {
+    transition: all 0.3s ease;
+}
+
+#darkModeToggle:hover {
+    transform: rotate(180deg);
+}
+
+body.dark-mode #darkModeToggle {
+    background-color: var(--bg-hover);
+    border-color: var(--border-light);
+}
+
+body.dark-mode #darkModeToggle i {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   RESPONSIVE DARK MODE
+   ============================================ */
+
+@media (max-width: 768px) {
+    body.dark-mode .navbar-toggler {
+        background-color: var(--bg-hover);
+        border-color: var(--border-light);
+    }
+    
+    body.dark-mode .navbar-toggler-icon {
+        filter: invert(1);
+    }
+    
+    body.dark-mode .dropdown-menu {
+        background-color: var(--bg-modal);
+    }
+}
+
+@media (max-width: 576px) {
+    body.dark-mode .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    body.dark-mode .modal-content {
+        background-color: var(--bg-modal);
+    }
+}
