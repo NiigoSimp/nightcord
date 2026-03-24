@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { 
             --primary: #884499; 
@@ -81,6 +84,7 @@
         .story-exclusive { font-size: 0.7rem; background: #FF8C00; color: white; padding: 2px 8px; border-radius: 12px; }
         .story-user-badge { font-size: 0.7rem; background: #6c757d; color: white; padding: 2px 8px; border-radius: 12px; }
         .filter-section { background: white; border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-color); }
+        .data-management-section { background: white; border-radius: 16px; padding: 20px; margin-top: 30px; border: 1px solid var(--border-color); }
         .btn-primary { background: var(--primary); border-color: var(--primary); }
         .btn-primary:hover { background: #6a3677; border-color: #6a3677; }
         .admin-card { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
@@ -89,6 +93,9 @@
         .view-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
         .view-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: white; cursor: pointer; transition: all 0.3s; }
         .view-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .btn-group-flex { display: flex; flex-wrap: wrap; gap: 10px; }
+        .import-buttons { display: flex; gap: 10px; margin-top: 10px; }
+        .file-input-label { cursor: pointer; }
         @media (max-width: 768px) { .filter-section .row > div { margin-bottom: 15px; } }
     </style>
 </head>
@@ -240,6 +247,77 @@
             <div><span id="showingInfo"></span></div>
             <nav><ul class="pagination" id="pagination"></ul></nav>
         </div>
+
+        <!-- DATA MANAGEMENT SECTION - FULL EXPORT/IMPORT -->
+        <div class="data-management-section">
+            <h6 class="fw-bold mb-3" style="color: var(--secondary-2);">
+                <i class="fas fa-database me-2"></i>Data Management
+            </h6>
+            
+            <!-- Export Section -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">📤 Export Story Data</label>
+                    <div class="btn-group-flex">
+                        <button class="btn btn-outline-success" onclick="exportAsJSON()">
+                            <i class="fas fa-file-code me-1"></i> Export JSON
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="exportAsTXT()">
+                            <i class="fas fa-file-alt me-1"></i> Export TXT
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="exportAsDOCX()">
+                            <i class="fas fa-file-word me-1"></i> Export DOCX
+                        </button>
+                        <button class="btn btn-outline-info" onclick="exportAsPNG()">
+                            <i class="fas fa-image me-1"></i> Export as PNG
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Import Section -->
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">📥 Import Story Data</label>
+                    <div class="import-buttons">
+                        <label class="btn btn-outline-success file-input-label">
+                            <i class="fas fa-file-code me-1"></i> Import JSON
+                            <input type="file" id="importJSONFile" accept=".json" style="display: none;" onchange="importJSON(this)">
+                        </label>
+                        <label class="btn btn-outline-primary file-input-label">
+                            <i class="fas fa-file-alt me-1"></i> Import TXT
+                            <input type="file" id="importTXTFile" accept=".txt" style="display: none;" onchange="importTXT(this)">
+                        </label>
+                        <label class="btn btn-outline-danger file-input-label">
+                            <i class="fas fa-file-word me-1"></i> Import DOCX
+                            <input type="file" id="importDOCXFile" accept=".docx" style="display: none;" onchange="importDOCX(this)">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Danger Zone -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <hr>
+                    <label class="form-label fw-bold text-danger">⚠️ Danger Zone</label>
+                    <div class="btn-group-flex">
+                        <button class="btn btn-outline-danger" onclick="confirmClearAll()">
+                            <i class="fas fa-trash-alt me-1"></i> Delete All Stories
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="alert alert-info mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Data is automatically saved to LocalStorage. Refreshing the page will keep your data!
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <!-- Edit Story Modal -->
@@ -322,6 +400,26 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clear All Confirmation Modal -->
+    <div class="modal fade" id="clearAllModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Clear All</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>ALL stories</strong>?</p>
+                    <p class="text-danger"><small>This action cannot be undone! All your story data will be permanently lost.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="executeClearAll()">Delete All</button>
                 </div>
             </div>
         </div>
@@ -596,6 +694,239 @@
             }
         }
         
+        // export
+        
+        function exportAsJSON() {
+            StoryService.exportJSON();
+            showToast('success', 'JSON exported successfully!');
+        }
+        
+        function exportAsTXT() {
+            const stories = StoryService.getAllStories();
+            let content = 'NIGHTCORD STORY VAULT\n';
+            content += '='.repeat(50) + '\n\n';
+            content += `Total Stories: ${stories.length}\n`;
+            content += `Exported: ${new Date().toLocaleString()}\n`;
+            content += '='.repeat(50) + '\n\n';
+            
+            stories.forEach((story, index) => {
+                content += `[${index + 1}] ${story.title}\n`;
+                content += `Author: ${story.author}\n`;
+                content += `Genre: ${story.genre}\n`;
+                content += `Rating: ★ ${story.rating}\n`;
+                content += `Chapters: ${story.chapters}\n`;
+                content += `Status: ${story.status || 'Ongoing'}\n`;
+                content += `Source: ${story.exclusive ? 'Nightcord Exclusive' : (story.userCreated ? 'User Story' : 'Default Story')}\n`;
+                content += `Published: ${story.publishDate || story.createdAt?.split('T')[0] || 'Unknown'}\n`;
+                content += `\n--- Description ---\n${story.description || 'No description'}\n`;
+                content += `\n--- Content ---\n${(story.content || 'No content').substring(0, 500)}${(story.content?.length || 0) > 500 ? '...' : ''}\n`;
+                content += '\n' + '-'.repeat(50) + '\n\n';
+            });
+            
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            saveAs(blob, `nightcord_stories_${new Date().toISOString().slice(0,10)}.txt`);
+            showToast('success', 'TXT exported successfully!');
+        }
+        
+        function exportAsDOCX() {
+            const stories = StoryService.getAllStories();
+            let content = 'NIGHTCORD STORY VAULT\n\n';
+            content += `Total Stories: ${stories.length}\n`;
+            content += `Exported: ${new Date().toLocaleString()}\n`;
+            content += '='.repeat(50) + '\n\n';
+            
+            stories.forEach((story, index) => {
+                content += `[${index + 1}] ${story.title}\n`;
+                content += `Author: ${story.author}\n`;
+                content += `Genre: ${story.genre}\n`;
+                content += `Rating: ★ ${story.rating}\n`;
+                content += `Chapters: ${story.chapters}\n\n`;
+                content += `Description:\n${story.description || 'No description'}\n\n`;
+                content += `Content:\n${story.content || 'No content'}\n\n`;
+                content += '-'.repeat(50) + '\n\n';
+            });
+            
+            const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            saveAs(blob, `nightcord_stories_${new Date().toISOString().slice(0,10)}.docx`);
+            showToast('success', 'DOCX exported successfully!');
+        }
+        
+        function exportAsPNG() {
+            // Create a temporary div with all stories for screenshot
+            const tempDiv = document.createElement('div');
+            tempDiv.style.position = 'fixed';
+            tempDiv.style.top = '-10000px';
+            tempDiv.style.left = '-10000px';
+            tempDiv.style.width = '800px';
+            tempDiv.style.background = 'white';
+            tempDiv.style.padding = '20px';
+            tempDiv.style.fontFamily = 'Inter, sans-serif';
+            tempDiv.style.color = '#333';
+            
+            const stories = StoryService.getAllStories();
+            let html = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #884499;">Nightcord Story Vault</h1>
+                    <p>Total Stories: ${stories.length} | Exported: ${new Date().toLocaleString()}</p>
+                    <hr>
+                </div>
+            `;
+            
+            stories.forEach((story, index) => {
+                html += `
+                    <div style="margin-bottom: 40px; page-break-after: always;">
+                        <h2 style="color: #884499;">${index + 1}. ${escapeHtml(story.title)}</h2>
+                        <p><strong>Author:</strong> ${escapeHtml(story.author)}</p>
+                        <p><strong>Genre:</strong> ${story.genre}</p>
+                        <p><strong>Rating:</strong> ★ ${story.rating}</p>
+                        <p><strong>Chapters:</strong> ${story.chapters}</p>
+                        <p><strong>Status:</strong> ${story.status || 'Ongoing'}</p>
+                        <p><strong>Source:</strong> ${story.exclusive ? 'Nightcord Exclusive' : (story.userCreated ? 'User Story' : 'Default Story')}</p>
+                        <h4>Description</h4>
+                        <p>${escapeHtml(story.description || 'No description')}</p>
+                        <h4>Content Preview</h4>
+                        <p>${escapeHtml((story.content || 'No content').substring(0, 1000))}${(story.content?.length || 0) > 1000 ? '...' : ''}</p>
+                        <hr>
+                    </div>
+                `;
+            });
+            
+            tempDiv.innerHTML = html;
+            document.body.appendChild(tempDiv);
+            
+            html2canvas(tempDiv, { scale: 2 }).then(canvas => {
+                canvas.toBlob(blob => {
+                    saveAs(blob, `nightcord_stories_${new Date().toISOString().slice(0,10)}.png`);
+                    showToast('success', 'PNG exported successfully!');
+                });
+                document.body.removeChild(tempDiv);
+            }).catch(err => {
+                console.error('PNG export failed:', err);
+                showToast('error', 'PNG export failed!');
+                document.body.removeChild(tempDiv);
+            });
+        }
+        
+        //import
+        
+        function importJSON(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const stories = JSON.parse(e.target.result);
+                    if (Array.isArray(stories)) {
+                        StoryService.saveStories(stories);
+                        showToast('success', `Imported ${stories.length} stories from JSON!`);
+                        loadStories();
+                    } else {
+                        showToast('error', 'Invalid JSON format! Expected array of stories.');
+                    }
+                } catch (err) {
+                    showToast('error', 'Failed to parse JSON file!');
+                }
+                input.value = '';
+            };
+            reader.readAsText(file);
+        }
+        
+        function importTXT(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const content = e.target.result;
+                // Parse TXT content into story format
+                const lines = content.split('\n');
+                const title = lines[0]?.replace(/^\[?\d+\]?\s*/, '').trim() || 'Imported Story';
+                const author = lines.find(l => l.includes('Author:'))?.replace('Author:', '').trim() || 'Unknown';
+                const description = lines.find(l => l.includes('Description:'))?.replace('Description:', '').trim() || 'Imported from TXT file';
+                
+                const story = {
+                    id: Date.now().toString(),
+                    title: title,
+                    author: author,
+                    description: description,
+                    genre: 'Romance',
+                    chapters: 1,
+                    rating: 4.5,
+                    coverImage: 'assets/img/placeholder.png',
+                    exclusive: false,
+                    userCreated: true,
+                    createdAt: new Date().toISOString(),
+                    publishDate: new Date().toISOString().split('T')[0],
+                    status: 'Ongoing',
+                    priority: 'Medium',
+                    content: content.substring(0, 5000)
+                };
+                
+                StoryService.addStory(story);
+                showToast('success', 'Story imported from TXT!');
+                loadStories();
+                input.value = '';
+            };
+            reader.readAsText(file, 'UTF-8');
+        }
+        
+        function importDOCX(input) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                JSZip.loadAsync(arrayBuffer).then(zip => {
+                    const documentXml = zip.file("word/document.xml");
+                    if (documentXml) {
+                        documentXml.async("string").then(xml => {
+                            const text = xml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                            const lines = text.split('\n');
+                            const title = lines[0]?.trim() || 'Imported Story';
+                            
+                            const story = {
+                                id: Date.now().toString(),
+                                title: title.substring(0, 100),
+                                author: 'Imported Author',
+                                description: `Imported from DOCX file on ${new Date().toLocaleDateString()}`,
+                                genre: 'Romance',
+                                chapters: 1,
+                                rating: 4.5,
+                                coverImage: 'assets/img/placeholder.png',
+                                exclusive: false,
+                                userCreated: true,
+                                createdAt: new Date().toISOString(),
+                                publishDate: new Date().toISOString().split('T')[0],
+                                status: 'Ongoing',
+                                priority: 'Medium',
+                                content: text.substring(0, 10000)
+                            };
+                            
+                            StoryService.addStory(story);
+                            showToast('success', 'Story imported from DOCX!');
+                            loadStories();
+                        });
+                    } else {
+                        showToast('error', 'Invalid DOCX file!');
+                    }
+                }).catch(() => {
+                    showToast('error', 'Failed to read DOCX file!');
+                });
+                input.value = '';
+            };
+            reader.readAsArrayBuffer(file);
+        }
+        
+        function confirmClearAll() {
+            $('#clearAllModal').modal('show');
+        }
+        
+        function executeClearAll() {
+            StoryService.clearAll();
+            showToast('warning', 'All stories have been deleted!');
+            $('#clearAllModal').modal('hide');
+            loadStories();
+        }
+        
         function updatePagination() {
             let pages = Math.ceil(filteredStories.length/itemsPerPage), html='';
             if (pages > 1) {
@@ -608,7 +939,8 @@
         
         function changePage(p) { currentPage=p; renderStories(); }
         function clearFilters() { $('#searchInput').val(''); $('#filterGenre').val('all'); $('#filterSource').val('all'); applyFilters(); }
-        function toggleView(view) { currentView = view; 
+        function toggleView(view) { 
+            currentView = view; 
             $('#cardViewBtn, #tableViewBtn').removeClass('active');
             if(view === 'card') $('#cardViewBtn').addClass('active');
             else $('#tableViewBtn').addClass('active');

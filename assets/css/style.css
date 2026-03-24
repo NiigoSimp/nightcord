@@ -309,15 +309,6 @@ body.dark-mode .btn-outline-secondary:hover {
     color: white !important;
 }
 
-/* Dark mode toggle */
-#darkModeToggle {
-    transition: all 0.3s ease;
-}
-
-#darkModeToggle:hover {
-    transform: rotate(180deg);
-}
-
 /* Transitions */
 body.dark-mode,
 body.dark-mode *,
