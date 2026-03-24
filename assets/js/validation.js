@@ -1,4 +1,4 @@
-// validation.js - Validation realtime nâng cao
+// validation.js - Enhanced realtime validation
 
 // Validation rules
 const ValidationRules = {
@@ -6,18 +6,18 @@ const ValidationRules = {
         required: true,
         minLength: 1,
         maxLength: 100,
-        message: 'Tiêu đề phải từ 1-100 ký tự'
+        message: 'Title must be between 1-100 characters'
     },
     description: {
         required: true,
         minLength: 10,
         maxLength: 500,
-        message: 'Mô tả phải từ 10-500 ký tự'
+        message: 'Description must be between 10-500 characters'
     },
     deadline: {
         required: true,
         minDate: getToday(),
-        message: 'Deadline không được nhỏ hơn ngày hiện tại'
+        message: 'Deadline cannot be earlier than today'
     }
 };
 
@@ -27,15 +27,15 @@ function validateField(fieldName, value) {
     if (!rule) return { valid: true, message: '' };
     
     if (rule.required && !value) {
-        return { valid: false, message: `${fieldName} không được để trống` };
+        return { valid: false, message: `${fieldName} cannot be empty` };
     }
     
     if (rule.minLength && value.length < rule.minLength) {
-        return { valid: false, message: `${fieldName} phải có ít nhất ${rule.minLength} ký tự` };
+        return { valid: false, message: `${fieldName} must be at least ${rule.minLength} characters` };
     }
     
     if (rule.maxLength && value.length > rule.maxLength) {
-        return { valid: false, message: `${fieldName} không được quá ${rule.maxLength} ký tự` };
+        return { valid: false, message: `${fieldName} cannot exceed ${rule.maxLength} characters` };
     }
     
     if (rule.minDate && value < rule.minDate) {

@@ -1,321 +1,814 @@
 /* ============================================
-   DARK MODE CSS - Chế độ tối cho website
+   NIGHTCORD STYLE.CSS - Light Mode Only
    ============================================ */
 
-/* Dark mode variables - Ghi đè lên biến màu sắc */
-body.dark-mode {
+/* Root variables - Light theme only */
+:root {
     /* Background colors */
-    --webtoon-bg: #1a1a1a !important;
-    --webtoon-card-bg: #2d2d2d !important;
-    --webtoon-border: #404040 !important;
-    --webtoon-hover: #3d3d3d !important;
+    --bg-color: #f2f2f2;
+    --card-bg: #ffffff;
+    --border-color: #eaeaea;
+    --hover-bg: #f8f9fa;
     
-    /* 5 màu chính - điều chỉnh cho dark mode */
-    --primary: #9b55ad !important;
-    --secondary-1: #d46a9e !important;
-    --secondary-2: #9a9add !important;
-    --accent-1: #b89670 !important;
-    --accent-2: #c495b5 !important;
+    /* 5 main colors */
+    --primary: #884499;
+    --secondary-1: #BB5688;
+    --secondary-2: #8888CC;
+    --accent-1: #CCAA88;
+    --accent-2: #DDAACC;
     
     /* Text colors */
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --text-muted: #999999;
-    --text-inverse: #333333;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-muted: #888888;
+    --text-inverse: #ffffff;
     
-    /* Background colors */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-card: #2d2d2d;
-    --bg-navbar: #2d2d2d;
-    --bg-footer: #2d2d2d;
-    --bg-modal: #2d2d2d;
-    --bg-input: #3d3d3d;
-    
-    /* Border colors */
-    --border-color: #404040;
+    /* Component backgrounds */
+    --bg-navbar: #ffffff;
+    --bg-footer: #ffffff;
+    --bg-modal: #ffffff;
+    --bg-input: #ffffff;
     
     /* Shadow */
-    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-color: rgba(0, 0, 0, 0.05);
 }
 
-/* ============================================
-   BACKGROUND & TEXT COLORS
-   ============================================ */
-
-body.dark-mode {
-    background-color: var(--bg-primary) !important;
-    color: var(--text-primary) !important;
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Navbar */
-body.dark-mode .webtoon-nav {
-    background: var(--bg-navbar) !important;
-    border-bottom-color: var(--border-color) !important;
+body {
+    background-color: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .webtoon-nav-link {
-    color: var(--text-primary) !important;
+/* Navbar Styles */
+.main-nav {
+    background: var(--bg-navbar);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px var(--shadow-color);
+    padding: 0.5rem 0;
 }
 
-body.dark-mode .webtoon-nav-link.active {
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-link-custom {
+    font-weight: 600;
+    color: #333 !important;
+    padding: 0.5rem 1rem !important;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link-custom:hover {
     color: var(--primary) !important;
 }
 
-body.dark-mode .webtoon-nav-link.active::after {
-    background: linear-gradient(135deg, var(--primary), var(--secondary-1)) !important;
-}
-
-/* Cards */
-body.dark-mode .webtoon-card {
-    background: var(--bg-card) !important;
-    border-color: var(--border-color) !important;
-    box-shadow: 0 4px 15px var(--shadow-color) !important;
-}
-
-body.dark-mode .webtoon-card:hover {
-    border-color: var(--secondary-2) !important;
-    box-shadow: 0 15px 30px rgba(155, 85, 173, 0.3) !important;
-}
-
-body.dark-mode .webtoon-title {
-    color: var(--text-primary) !important;
-}
-
-body.dark-mode .webtoon-creator {
-    color: var(--text-secondary) !important;
-}
-
-body.dark-mode .webtoon-chapters {
-    color: var(--text-muted) !important;
-}
-
-body.dark-mode .webtoon-rank {
-    background: var(--accent-2) !important;
-    color: var(--text-inverse) !important;
-    box-shadow: 0 2px 5px var(--shadow-color) !important;
-}
-
-/* Task Cards */
-body.dark-mode .task-webtoon-card {
-    background: var(--bg-card) !important;
-    border-color: var(--border-color) !important;
-}
-
-body.dark-mode .task-webtoon-card:hover {
-    border-color: var(--secondary-2) !important;
-    box-shadow: 0 10px 20px rgba(155, 85, 173, 0.3) !important;
-}
-
-body.dark-mode .task-title {
-    color: var(--text-primary) !important;
-}
-
-body.dark-mode .task-deadline {
-    color: var(--text-muted) !important;
-}
-
-/* Priority badges */
-body.dark-mode .priority-high {
-    background: var(--primary) !important;
-    color: white !important;
-}
-
-body.dark-mode .priority-medium {
-    background: var(--secondary-1) !important;
-    color: white !important;
-}
-
-body.dark-mode .priority-low {
-    background: var(--secondary-2) !important;
-    color: white !important;
-}
-
-/* Status badges */
-body.dark-mode .status-pending {
-    background: var(--accent-2) !important;
-    color: var(--text-inverse) !important;
-}
-
-body.dark-mode .status-done {
-    background: var(--accent-1) !important;
-    color: var(--text-inverse) !important;
-}
-
-/* Footer */
-body.dark-mode .footer {
-    background: var(--bg-footer) !important;
-    border-top-color: var(--border-color) !important;
-}
-
-body.dark-mode .footer h5 {
+.nav-link-custom.active {
     color: var(--primary) !important;
 }
 
-body.dark-mode .footer p {
-    color: var(--text-secondary) !important;
+.nav-link-custom.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+    height: 3px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+    border-radius: 3px 3px 0 0;
 }
 
-body.dark-mode .footer ul li a {
-    color: var(--text-secondary) !important;
+/* Button Styles */
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .footer ul li a:hover {
-    color: var(--primary) !important;
+.btn-primary:hover {
+    background: #6a3677;
+    border-color: #6a3677;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(136, 68, 153, 0.3);
 }
 
-/* Social links */
-body.dark-mode .social-links a {
-    background: var(--accent-2) !important;
-    color: var(--text-inverse) !important;
+.btn-outline-primary {
+    border-color: var(--primary);
+    color: var(--primary);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .social-links a:hover {
-    background: var(--primary) !important;
-    color: white !important;
+.btn-outline-primary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
 }
 
-/* Genre Sections */
-body.dark-mode .genre-section {
-    background: rgba(45, 45, 45, 0.8) !important;
-    backdrop-filter: blur(10px);
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .section-title {
-    color: var(--text-primary) !important;
+.btn-outline-secondary:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
 }
 
-body.dark-mode .section-link {
-    color: var(--secondary-2) !important;
+/* Card Styles */
+.story-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    height: 100%;
+    cursor: pointer;
 }
 
-body.dark-mode .section-link:hover {
-    color: var(--primary) !important;
+.story-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(136, 68, 153, 0.1);
+    border-color: var(--secondary-2);
 }
 
-/* Genre Tags */
-body.dark-mode .genre-tag.romantic {
-    background: var(--primary) !important;
+.story-cover {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #f5f5f5;
 }
 
-body.dark-mode .genre-tag.fluff {
-    background: var(--secondary-1) !important;
+.story-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
 }
 
-body.dark-mode .genre-tag.angst {
-    background: var(--secondary-2) !important;
+.story-card:hover .story-cover img {
+    transform: scale(1.05);
 }
 
-/* Banner */
-body.dark-mode .webtoon-banner {
-    background: linear-gradient(135deg, var(--primary), var(--secondary-1)) !important;
+.story-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    z-index: 2;
 }
 
-body.dark-mode .banner-btn {
-    background: white !important;
-    color: var(--primary) !important;
+/* Using 5-color palette for badges */
+.badge-romance {
+    background: var(--primary);
 }
 
-/* Modals */
-body.dark-mode .modal-content {
-    background-color: var(--bg-modal) !important;
-    border-color: var(--border-color) !important;
+.badge-fluff {
+    background: var(--secondary-1);
 }
 
-body.dark-mode .modal-header {
-    border-bottom-color: var(--border-color) !important;
+.badge-angst {
+    background: var(--secondary-2);
 }
 
-body.dark-mode .modal-footer {
-    border-top-color: var(--border-color) !important;
+.badge-exclusive {
+    background: var(--accent-1);
+    color: #333;
 }
 
-body.dark-mode .modal-title {
-    color: white !important;
+.badge-user {
+    background: #6c757d;
 }
 
-/* Forms */
-body.dark-mode .form-control,
-body.dark-mode .form-select {
-    background-color: var(--bg-input) !important;
-    border-color: var(--border-color) !important;
-    color: var(--text-primary) !important;
+.story-rank {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--accent-2);
+    color: #333;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 2;
+    box-shadow: 0 2px 5px var(--shadow-color);
 }
 
-body.dark-mode .form-control:focus,
-body.dark-mode .form-select:focus {
-    background-color: var(--bg-input) !important;
-    border-color: var(--primary) !important;
-    box-shadow: 0 0 0 0.2rem rgba(155, 85, 173, 0.25) !important;
+.story-info {
+    padding: 15px;
 }
 
-body.dark-mode .form-label {
-    color: var(--text-secondary) !important;
+.story-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.story-creator {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.story-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.story-rating {
+    color: #FFB800;
+    font-weight: 600;
+}
+
+.story-chapters {
+    color: var(--text-muted);
+}
+
+/* Using accent-1 for exclusive badge */
+.story-exclusive {
+    font-size: 0.7rem;
+    background: var(--accent-1);
+    color: #333;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.story-user-badge {
+    font-size: 0.7rem;
+    background: #6c757d;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+/* Badge Styles */
+.badge-low {
+    background: var(--secondary-2);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.badge-medium {
+    background: var(--secondary-1);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.badge-high {
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* Form Styles */
+.form-control,
+.form-select {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(136, 68, 153, 0.25);
+    outline: none;
+}
+
+.form-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.input-group-text {
+    background: var(--hover-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* Modal Styles */
+.modal-content {
+    background-color: var(--bg-modal);
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+}
+
+.modal-header .btn-close {
+    transition: all 0.3s ease;
+}
+
+.modal-header .btn-close:hover {
+    transform: rotate(90deg);
+}
+
+/* Table Styles */
+.table {
+    color: var(--text-primary);
+    background: var(--card-bg);
+}
+
+.table thead th {
+    border: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--secondary-2));
+}
+
+.table tbody tr {
+    transition: all 0.2s;
+    border-color: var(--border-color);
+}
+
+.table tbody tr:hover {
+    background-color: rgba(136, 136, 204, 0.05);
+}
+
+.table tbody tr.task-done {
+    background-color: rgba(136, 136, 204, 0.05);
+}
+
+.table tbody tr.task-done .task-title {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+/* Pagination */
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    background: var(--secondary-2);
+    border-color: var(--secondary-2);
+    color: white;
+}
+
+.page-item.active .page-link {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
 }
 
 /* Dropdown */
-body.dark-mode .dropdown-menu {
-    background-color: var(--bg-modal) !important;
-    border-color: var(--border-color) !important;
+.dropdown-menu {
+    background-color: var(--bg-modal);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
-body.dark-mode .dropdown-item {
-    color: var(--text-primary) !important;
+.dropdown-item {
+    color: var(--text-primary);
+    transition: all 0.3s ease;
 }
 
-body.dark-mode .dropdown-item:hover {
-    background-color: var(--bg-hover, #3d3d3d) !important;
-    color: var(--primary) !important;
+.dropdown-item:hover {
+    background-color: rgba(136, 136, 204, 0.1);
+    color: var(--primary);
+}
+
+.dropdown-divider {
+    border-top-color: var(--border-color);
 }
 
 /* Toast */
-body.dark-mode .toast {
-    background-color: var(--bg-modal) !important;
-    border-color: var(--border-color) !important;
+.toast {
+    background-color: var(--bg-modal);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-body.dark-mode .toast-header {
-    background-color: var(--bg-card) !important;
-    color: var(--text-primary) !important;
-    border-bottom-color: var(--border-color) !important;
+.toast-header {
+    background: var(--primary);
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-body.dark-mode .toast-body {
-    color: var(--text-primary) !important;
+.toast-body {
+    color: var(--text-primary);
 }
 
-/* Empty state */
-body.dark-mode #emptyState h4 {
-    color: var(--secondary-2) !important;
+/* Footer */
+.footer {
+    background: var(--bg-footer);
+    border-top: 1px solid var(--border-color);
+    padding: 40px 0 20px;
+    margin-top: 40px;
 }
 
-body.dark-mode #emptyState p {
-    color: var(--text-secondary) !important;
+.footer h5 {
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
-body.dark-mode #emptyState img {
-    opacity: 0.8;
+.footer p {
+    color: var(--text-secondary);
 }
 
-/* Buttons */
-body.dark-mode .btn-outline-secondary {
-    border-color: var(--border-color) !important;
-    color: var(--text-secondary) !important;
+.footer ul {
+    list-style: none;
+    padding: 0;
 }
 
-body.dark-mode .btn-outline-secondary:hover {
-    background: var(--primary) !important;
-    border-color: var(--primary) !important;
-    color: white !important;
+.footer ul li {
+    margin-bottom: 10px;
 }
 
-/* Transitions */
-body.dark-mode,
-body.dark-mode *,
-body.dark-mode *::before,
-body.dark-mode *::after {
-    transition: background-color 0.3s ease,
-                border-color 0.3s ease,
-                color 0.3s ease,
-                box-shadow 0.3s ease !important;
+.footer ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer ul li a:hover {
+    color: var(--primary);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Banner */
+.main-banner {
+    background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+    border-radius: 20px;
+    padding: 40px;
+    color: white;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.main-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.main-banner::after {
+    content: '';
+    position: absolute;
+    bottom: -50%;
+    left: -10%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.banner-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.banner-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 25px;
+    max-width: 500px;
+    position: relative;
+    z-index: 2;
+}
+
+.banner-btn {
+    background: white;
+    color: var(--primary);
+    border: none;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    transition: all 0.3s;
+    position: relative;
+    z-index: 2;
+}
+
+.banner-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    color: var(--secondary-1);
+}
+
+/* Genre Tags */
+.genre-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.genre-tag {
+    padding: 10px 30px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s;
+    cursor: pointer;
+    color: white;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+.genre-tag.romance {
+    background: var(--primary);
+}
+
+.genre-tag.fluff {
+    background: var(--secondary-1);
+}
+
+.genre-tag.angst {
+    background: var(--secondary-2);
+}
+
+.genre-tag:hover,
+.genre-tag.active {
+    transform: translateY(-3px);
+    filter: brightness(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Genre Sections */
+.genre-section {
+    margin-bottom: 40px;
+    padding: 30px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    scroll-margin-top: 80px;
+}
+
+.genre-section-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.romance-title {
+    color: var(--primary);
+}
+
+.fluff-title {
+    color: var(--secondary-1);
+}
+
+.angst-title {
+    color: var(--secondary-2);
+}
+
+/* Admin Cards */
+.admin-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    border: 1px solid var(--border-color);
+}
+
+.story-preview {
+    background: var(--hover-bg);
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid var(--primary);
+}
+
+.story-preview-exclusive {
+    border-left-color: var(--accent-1);
+}
+
+/* Filter Section */
+.filter-section {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.data-management-section {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 30px;
+    border: 1px solid var(--border-color);
+}
+
+/* Reader Container */
+.reader-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.story-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+}
+
+/* Empty State */
+#emptyState img {
+    opacity: 0.7;
+}
+
+#emptyState h4 {
+    color: var(--secondary-2);
+}
+
+#emptyState p {
+    color: var(--text-secondary);
+}
+
+/* ============================================
+   AUTH VISIBILITY - SINGLE CLEAN VERSION
+   ============================================ */
+
+/* Base auth classes */
+.admin-only {
+    display: none !important;
+}
+
+.logout-btn {
+    display: none !important;
+}
+
+.login-btn {
+    display: inline-block !important;
+}
+
+/* When logged in */
+body.logged-in .login-btn {
+    display: none !important;
+}
+
+body.logged-in .logout-btn {
+    display: inline-block !important;
+}
+
+/* When admin is logged in */
+body.role-admin .admin-only {
+    display: inline-block !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .banner-title {
+        font-size: 1.8rem;
+    }
+    
+    .main-banner {
+        padding: 30px 20px;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+    
+    .genre-section-title {
+        font-size: 1.4rem;
+    }
+    
+    .genre-tag {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .reader-container {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .story-title {
+        font-size: 1.5rem;
+    }
+    
+    .story-content {
+        font-size: 0.95rem;
+    }
+    
+    .admin-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stories-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+    
+    .story-card {
+        max-width: 180px;
+    }
 }
