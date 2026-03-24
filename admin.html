@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý truyện - Nightcord Admin</title>
+    <title>Story Management - Nightcord Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,32 +27,32 @@
     <nav class="navbar navbar-expand-lg main-nav sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2" onerror="this.style.display='none'"><span class="logo">Nightcord Admin</span></a>
-            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Đăng xuất</button></div>
+            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Logout</button></div>
         </div>
     </nav>
 
     <div class="container admin-container">
         <div class="admin-card">
-            <h2 class="mb-4" style="color: var(--primary);"><i class="fas fa-plus-circle me-2"></i>Thêm truyện mới</h2>
+            <h2 class="mb-4" style="color: var(--primary);"><i class="fas fa-plus-circle me-2"></i>Add new story</h2>
             <form id="addStoryForm">
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">Tên truyện *</label><input type="text" class="form-control" id="title" required></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">Tác giả *</label><input type="text" class="form-control" id="author" required></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Story title *</label><input type="text" class="form-control" id="title" required></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Author *</label><input type="text" class="form-control" id="author" required></div>
                 </div>
-                <div class="mb-3"><label class="form-label">Mô tả *</label><textarea class="form-control" id="description" rows="3" required></textarea></div>
+                <div class="mb-3"><label class="form-label">Description *</label><textarea class="form-control" id="description" rows="3" required></textarea></div>
                 <div class="row">
-                    <div class="col-md-4 mb-3"><label class="form-label">Thể loại</label><select class="form-select" id="genre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Số chương</label><input type="number" class="form-control" id="chapters" value="1"></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Đánh giá</label><input type="number" class="form-control" id="rating" step="0.1" value="4.5"></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Genre</label><select class="form-select" id="genre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Number of chapters</label><input type="number" class="form-control" id="chapters" value="1"></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Rating</label><input type="number" class="form-control" id="rating" step="0.1" value="4.5"></div>
                 </div>
-                <div class="mb-3"><label class="form-label">Ảnh bìa URL</label><input type="text" class="form-control" id="coverImage" placeholder="assets/img/placeholder.png"></div>
-                <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" id="exclusive"><label class="form-check-label"><span class="exclusive-badge">Độc quyền bởi Nightcord</span> - Truyện chỉ có tại Nightcord</label></div>
-                <button type="button" class="btn btn-primary w-100" onclick="addNewStory()"><i class="fas fa-save me-2"></i>Thêm truyện</button>
+                <div class="mb-3"><label class="form-label">Cover image URL</label><input type="text" class="form-control" id="coverImage" placeholder="assets/img/placeholder.png"></div>
+                <div class="mb-3 form-check"><input type="checkbox" class="form-check-input" id="exclusive"><label class="form-check-label"><span class="exclusive-badge">Exclusive by Nightcord</span> - Story only available at Nightcord</label></div>
+                <button type="button" class="btn btn-primary w-100" onclick="addNewStory()"><i class="fas fa-save me-2"></i>Add story</button>
             </form>
         </div>
 
         <div class="admin-card mt-4">
-            <h3 class="mb-3" style="color: var(--primary);"><i class="fas fa-list me-2"></i>Danh sách truyện hiện có</h3>
+            <h3 class="mb-3" style="color: var(--primary);"><i class="fas fa-list me-2"></i>Existing stories list</h3>
             <div id="storiesList"></div>
         </div>
     </div>
@@ -77,7 +77,7 @@
             const description = $('#description').val().trim();
             
             if (!title || !author || !description) { 
-                alert('Vui lòng điền đầy đủ thông tin!'); 
+                alert('Please fill in all required information!'); 
                 return; 
             }
             
@@ -92,21 +92,21 @@
                 coverImage: $('#coverImage').val() || 'assets/img/placeholder.png',
                 exclusive: $('#exclusive').is(':checked'),
                 createdAt: new Date().toISOString(),
-                content: `Chương 1: Mở đầu\n\nĐây là nội dung truyện "${title}".\n\nHãy thêm nội dung chi tiết tại đây.`
+                content: `Chapter 1: Introduction\n\nThis is the content of story "${title}".\n\nAdd detailed content here.`
             };
             
             StoryService.addStory(story);
-            alert('Thêm truyện thành công!');
+            alert('Story added successfully!');
             $('#addStoryForm')[0].reset();
             $('#exclusive').prop('checked', false);
             loadStoriesList();
         }
         
         function deleteStory(id) { 
-            if(confirm('Bạn có chắc muốn xóa truyện này?')){ 
+            if(confirm('Are you sure you want to delete this story?')){ 
                 StoryService.deleteStory(id); 
                 loadStoriesList(); 
-                alert('Đã xóa truyện!');
+                alert('Story deleted!');
             } 
         }
         
@@ -114,7 +114,7 @@
             const stories = StoryService.getAllStories();
             let html = '';
             if (stories.length === 0) {
-                html = '<p class="text-center">Chưa có truyện nào</p>';
+                html = '<p class="text-center">No stories yet</p>';
             } else {
                 stories.forEach(s => {
                     html += `<div class="story-preview ${s.exclusive ? 'story-preview-exclusive' : ''}" style="background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; border-left: 4px solid ${s.exclusive ? '#FF8C00' : '#884499'};">
@@ -122,7 +122,7 @@
                                     <div>
                                         <strong>${s.title}</strong> 
                                         <small class="text-muted">by ${s.author}</small> 
-                                        ${s.exclusive ? '<span style="background:#FF8C00; color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; margin-left:8px;">Độc quyền Nightcord</span>' : ''}
+                                        ${s.exclusive ? '<span style="background:#FF8C00; color:white; padding:2px 8px; border-radius:12px; font-size:0.7rem; margin-left:8px;">Nightcord Exclusive</span>' : ''}
                                     </div>
                                     <button class="btn btn-sm btn-danger" onclick="deleteStory('${s.id}')"><i class="fas fa-trash"></i></button>
                                 </div>

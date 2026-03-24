@@ -5,8 +5,6 @@ const StoryService = {
     getStories: function() {
         const stories = localStorage.getItem(STORAGE_KEY);
         if (stories) return JSON.parse(stories);
-        
-        // Dữ liệu mẫu ban đầu (truyện mẫu - userCreated = false)
         const defaultStories = [
             {
                 id: 'romance-1',

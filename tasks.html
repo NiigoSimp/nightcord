@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kho truyện - Nightcord Admin</title>
+    <title>Story Vault - Nightcord Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -39,47 +39,47 @@
     <nav class="navbar navbar-expand-lg main-nav sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2"><span class="logo">Nightcord Admin</span></a>
-            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Đăng xuất</button></div>
+            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Logout</button></div>
         </div>
     </nav>
 
     <main class="container my-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 style="color: var(--primary);"><i class="fas fa-books me-2"></i>Kho truyện Nightcord</h2>
+            <h2 style="color: var(--primary);"><i class="fas fa-books me-2"></i>Nightcord Story Vault</h2>
         </div>
 
-        <!-- Form thêm truyện độc quyền -->
+        <!-- Add exclusive story form -->
         <div class="admin-card">
-            <h4 class="mb-3" style="color: #FF8C00;"><i class="fas fa-crown me-2"></i>Thêm truyện độc quyền Nightcord</h4>
+            <h4 class="mb-3" style="color: #FF8C00;"><i class="fas fa-crown me-2"></i>Add Nightcord Exclusive Story</h4>
             <form id="adminStoryForm">
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">Tên truyện *</label><input type="text" class="form-control" id="adminTitle" required></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">Tác giả *</label><input type="text" class="form-control" id="adminAuthor" required></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Story title *</label><input type="text" class="form-control" id="adminTitle" required></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Author *</label><input type="text" class="form-control" id="adminAuthor" required></div>
                 </div>
-                <div class="mb-3"><label class="form-label">Mô tả *</label><textarea class="form-control" id="adminDescription" rows="2" required></textarea></div>
+                <div class="mb-3"><label class="form-label">Description *</label><textarea class="form-control" id="adminDescription" rows="2" required></textarea></div>
                 <div class="row">
-                    <div class="col-md-4 mb-3"><label class="form-label">Thể loại</label><select class="form-select" id="adminGenre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Số chương</label><input type="number" class="form-control" id="adminChapters" value="1"></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Đánh giá</label><input type="number" class="form-control" id="adminRating" step="0.1" value="4.5"></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Genre</label><select class="form-select" id="adminGenre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Number of chapters</label><input type="number" class="form-control" id="adminChapters" value="1"></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Rating</label><input type="number" class="form-control" id="adminRating" step="0.1" value="4.5"></div>
                 </div>
-                <div class="mb-3"><label class="form-label">Ảnh bìa URL</label><input type="text" class="form-control" id="adminCover" placeholder="assets/img/placeholder.png"></div>
-                <div class="mb-3"><label class="form-label">Nội dung truyện *</label><textarea class="form-control" id="adminContent" rows="4" required></textarea></div>
-                <button type="button" class="btn btn-primary" onclick="addExclusiveStory()"><i class="fas fa-save me-2"></i>Thêm truyện độc quyền</button>
+                <div class="mb-3"><label class="form-label">Cover image URL</label><input type="text" class="form-control" id="adminCover" placeholder="assets/img/placeholder.png"></div>
+                <div class="mb-3"><label class="form-label">Story content *</label><textarea class="form-control" id="adminContent" rows="4" required></textarea></div>
+                <button type="button" class="btn btn-primary" onclick="addExclusiveStory()"><i class="fas fa-save me-2"></i>Add exclusive story</button>
             </form>
         </div>
 
-        <!-- Filter và danh sách truyện -->
+        <!-- Filter and story list -->
         <div class="filter-section">
             <div class="row g-3">
-                <div class="col-md-4"><label class="form-label fw-bold">🔍 Tìm kiếm</label><input type="text" class="form-control" id="searchInput" placeholder="Tên truyện, tác giả..."></div>
-                <div class="col-md-3"><label class="form-label fw-bold">📚 Thể loại</label><select class="form-select" id="filterGenre"><option value="all">Tất cả</option><option value="Romance">Romance</option><option value="Fluff">Fluff</option><option value="Angst">Angst</option></select></div>
-                <div class="col-md-3"><label class="form-label fw-bold">🏷️ Nguồn</label><select class="form-select" id="filterSource"><option value="all">Tất cả</option><option value="exclusive">Độc quyền Nightcord</option><option value="default">Truyện mặc định</option><option value="user">Truyện người dùng</option></select></div>
-                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-secondary w-100" onclick="clearFilters()">Xóa lọc</button></div>
+                <div class="col-md-4"><label class="form-label fw-bold">🔍 Search</label><input type="text" class="form-control" id="searchInput" placeholder="Story title, author..."></div>
+                <div class="col-md-3"><label class="form-label fw-bold">📚 Genre</label><select class="form-select" id="filterGenre"><option value="all">All</option><option value="Romance">Romance</option><option value="Fluff">Fluff</option><option value="Angst">Angst</option></select></div>
+                <div class="col-md-3"><label class="form-label fw-bold">🏷️ Source</label><select class="form-select" id="filterSource"><option value="all">All</option><option value="exclusive">Nightcord Exclusive</option><option value="default">Default stories</option><option value="user">User stories</option></select></div>
+                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-secondary w-100" onclick="clearFilters()">Clear filters</button></div>
             </div>
         </div>
 
         <div id="storiesContainer" class="row g-4"></div>
-        <div id="emptyState" class="text-center py-5" style="display:none;"><img src="assets/img/empty.svg" style="max-width: 150px;"><h4 class="mt-3">Không tìm thấy truyện</h4></div>
+        <div id="emptyState" class="text-center py-5" style="display:none;"><img src="assets/img/empty.svg" style="max-width: 150px;"><h4 class="mt-3">No stories found</h4></div>
         <div class="d-flex justify-content-between align-items-center mt-4"><div><span id="showingInfo"></span></div><nav><ul class="pagination" id="pagination"></ul></nav></div>
     </main>
 
@@ -108,7 +108,7 @@
             const content = $('#adminContent').val().trim();
             
             if (!title || !author || !description || !content) {
-                alert('Vui lòng điền đầy đủ thông tin!');
+                alert('Please fill in all required information!');
                 return;
             }
             
@@ -128,7 +128,7 @@
             };
             
             StoryService.addStory(story);
-            alert('Thêm truyện độc quyền thành công!');
+            alert('Exclusive story added successfully!');
             $('#adminStoryForm')[0].reset();
             loadStories();
         }
@@ -161,7 +161,7 @@
             let html = '';
             page.forEach(s => {
                 let badgeClass, badgeText;
-                if (s.exclusive) { badgeClass = 'badge-exclusive'; badgeText = 'ĐỘC QUYỀN'; }
+                if (s.exclusive) { badgeClass = 'badge-exclusive'; badgeText = 'EXCLUSIVE'; }
                 else if (s.userCreated) { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre + ' (User)'; }
                 else { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre; }
                 
@@ -169,7 +169,7 @@
             });
             $('#storiesContainer').html(html);
             $('#emptyState').toggle(filteredStories.length===0);
-            $('#showingInfo').text(`Hiển thị ${start+1}-${Math.min(end,filteredStories.length)} của ${filteredStories.length} truyện`);
+            $('#showingInfo').text(`Showing ${start+1}-${Math.min(end,filteredStories.length)} of ${filteredStories.length} stories`);
         }
         
         function updatePagination() {

@@ -7,7 +7,7 @@ let deleteId = null;
 let currentView = 'card'; // Mặc định là card view
 
 // Danh sách thể loại
-const GENRES = ['Romantic', 'Fluff', 'Angst', 'Hành động', 'Hài hước', 'Kinh dị', 'Fantasy'];
+const GENRES = ['Romance', 'Fluff', 'Angst'];
 
 // Danh sách trạng thái
 const STORY_STATUS = {

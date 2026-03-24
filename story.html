@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đọc truyện - Nightcord</title>
+    <title>Read story - Nightcord</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,7 +31,7 @@
 
     <div class="container reader-container">
         <div id="storyContent"></div>
-        <div class="text-center mt-4"><a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại trang chủ</a></div>
+        <div class="text-center mt-4"><a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Back to home</a></div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
@@ -42,16 +42,16 @@
         function loadStory() {
             const id = getStoryId();
             const story = StoryService.getStoryById(id);
-            if (!story) { document.getElementById('storyContent').innerHTML = '<h2 class="text-center">Không tìm thấy truyện</h2>'; return; }
+            if (!story) { document.getElementById('storyContent').innerHTML = '<h2 class="text-center">Story not found</h2>'; return; }
             
             let badge = '';
-            if (story.exclusive) badge = '<span class="exclusive-badge">Độc quyền Nightcord</span>';
-            else if (story.userCreated) badge = '<span class="user-badge">Truyện người dùng</span>';
+            if (story.exclusive) badge = '<span class="exclusive-badge">Nightcord Exclusive</span>';
+            else if (story.userCreated) badge = '<span class="user-badge">User story</span>';
             
             document.getElementById('storyContent').innerHTML = `
                 <h1 class="story-title">${story.title} ${badge}</h1>
-                <div class="story-meta">Tác giả: ${story.author} | Thể loại: ${story.genre} | ${story.chapters} chương | ★ ${story.rating}</div>
-                <div class="story-content">${(story.content || 'Nội dung đang được cập nhật...').replace(/\n/g, '<br>')}</div>
+                <div class="story-meta">Author: ${story.author} | Genre: ${story.genre} | ${story.chapters} chapters | ★ ${story.rating}</div>
+                <div class="story-content">${(story.content || 'Content is being updated...').replace(/\n/g, '<br>')}</div>
             `;
         }
         
