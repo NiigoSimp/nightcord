@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nightcord - Đọc Truyện Online</title>
+    <title>Nightcord - Read Stories Online</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -379,22 +379,22 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="index.html">Trang chủ</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom" href="add-story.html">Thêm truyện</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="tasks.html" style="display:none;">Kho truyện</a></li>
-                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="statistics.html" style="display:none;">Thống kê</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="add-story.html">Add story</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="tasks.html" style="display:none;">Story vault</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="statistics.html" style="display:none;">Statistics</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <div class="dropdown">
                         <button class="btn rounded-pill px-4" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1)); border: none; color: white;" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle me-2"></i>Tài khoản
+                            <i class="fas fa-user-circle me-2"></i>Account
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item login-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a></li>
+                            <li><a class="dropdown-item login-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item admin-only" href="tasks.html" style="display:none;"><i class="fas fa-book me-2"></i>Kho truyện</a></li>
-                            <li><a class="dropdown-item admin-only" href="statistics.html" style="display:none;"><i class="fas fa-chart-bar me-2"></i>Thống kê</a></li>
-                            <li><a class="dropdown-item logout-btn" href="#" onclick="logout()" style="display:none;">Đăng xuất</a></li>
+                            <li><a class="dropdown-item admin-only" href="tasks.html" style="display:none;"><i class="fas fa-book me-2"></i>Story vault</a></li>
+                            <li><a class="dropdown-item admin-only" href="statistics.html" style="display:none;"><i class="fas fa-chart-bar me-2"></i>Statistics</a></li>
+                            <li><a class="dropdown-item logout-btn" href="#" onclick="logout()" style="display:none;">Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -403,7 +403,7 @@
     </nav>
 
     <main class="container my-4">
-        <!-- Banner Carousel 2 ảnh -->
+        <!-- Banner Carousel 2 images -->
         <div id="bannerCarousel" class="carousel slide banner-carousel" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -457,10 +457,10 @@
             <div class="stories-grid" id="angst-container"></div>
         </div>
 
-        <!-- Truyện độc quyền Nightcord -->
+        <!-- Nightcord exclusive stories -->
         <section class="content-section mt-5">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="section-title" style="font-size: 1.5rem; font-weight: 800; color: #FF8C00;">🌟 Độc quyền bởi Nightcord</h2>
+                <h2 class="section-title" style="font-size: 1.5rem; font-weight: 800; color: #FF8C00;">🌟 Exclusive by Nightcord</h2>
             </div>
             <div class="row g-4" id="exclusiveStoriesPreview"></div>
         </section>
@@ -471,27 +471,27 @@
             <div class="row">
                 <div class="col-md-4">
                     <h5>Nightcord</h5>
-                    <p>Nơi hội tụ những câu chuyện độc quyền</p>
+                    <p>A place for exclusive stories</p>
                 </div>
                 <div class="col-md-4">
-                    <h5>Liên kết</h5>
-                    <ul><li><a href="index.html">Trang chủ</a></li><li><a href="add-story.html">Thêm truyện</a></li></ul>
+                    <h5>Links</h5>
+                    <ul><li><a href="index.html">Home</a></li><li><a href="add-story.html">Add story</a></li></ul>
                 </div>
                 <div class="col-md-4">
-                    <h5>Theo dõi</h5>
+                    <h5>Follow us</h5>
                     <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-github"></i></a></div>
                 </div>
             </div>
-            <div class="text-center mt-3"><p class="mb-0">© 2024 Nightcord - Độc quyền bởi Nightcord</p></div>
+            <div class="text-center mt-3"><p class="mb-0">© 2024 Nightcord - Exclusive by Nightcord</p></div>
         </div>
     </footer>
 
     <!-- Modals -->
     <div class="modal fade" id="loginModal" tabindex="-1">
         <div class="modal-dialog"><div class="modal-content">
-            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1));"><h5 class="modal-title text-white">Đăng nhập</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
-            <div class="modal-body"><form><div class="mb-3"><label>Email</label><input type="email" id="loginEmail" class="form-control" placeholder="Email"></div><div class="mb-3"><label>Mật khẩu</label><input type="password" id="loginPassword" class="form-control" placeholder="Mật khẩu"></div></form></div>
-            <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button><button class="btn btn-primary" onclick="handleLogin()">Đăng nhập</button></div>
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1));"><h5 class="modal-title text-white">Login</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><form><div class="mb-3"><label>Email</label><input type="email" id="loginEmail" class="form-control" placeholder="Email"></div><div class="mb-3"><label>Password</label><input type="password" id="loginPassword" class="form-control" placeholder="Password"></div></form></div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Close</button><button class="btn btn-primary" onclick="handleLogin()">Login</button></div>
         </div></div>
     </div>
 
@@ -530,7 +530,7 @@
                 localStorage.setItem('currentUser', JSON.stringify({ email, role: account.role, name: account.name }));
                 $('#loginModal').modal('hide');
                 location.reload();
-            } else alert('Sai email hoặc mật khẩu!');
+            } else alert('Incorrect email or password!');
         }
         
         function logout() { localStorage.removeItem('currentUser'); location.reload(); }
@@ -539,41 +539,41 @@
         function loadAllStories() {
             const allStories = StoryService.getAllStories();
             
-            // Truyện độc quyền
+            // Exclusive stories
             const exclusiveStories = allStories.filter(s => s.exclusive === true);
             
-            // Tất cả truyện
+            // All stories
             const romanceStories = allStories.filter(s => s.genre === 'Romance' && !s.exclusive);
             const fluffStories = allStories.filter(s => s.genre === 'Fluff' && !s.exclusive);
             const angstStories = allStories.filter(s => s.genre === 'Angst' && !s.exclusive);
             
-            //  Romance section
+            // Romance section
             let romanceHtml = '';
             romanceStories.forEach((story, index) => {
                 romanceHtml += renderStoryCard(story, index + 1);
             });
-            $('#romance-container').html(romanceHtml || '<div class="text-center w-100">Chưa có truyện Romance</div>');
+            $('#romance-container').html(romanceHtml || '<div class="text-center w-100">No Romance stories yet</div>');
             
             // Fluff section
             let fluffHtml = '';
             fluffStories.forEach((story, index) => {
                 fluffHtml += renderStoryCard(story, index + 1);
             });
-            $('#fluff-container').html(fluffHtml || '<div class="text-center w-100">Chưa có truyện Fluff</div>');
+            $('#fluff-container').html(fluffHtml || '<div class="text-center w-100">No Fluff stories yet</div>');
             
             // Angst section
             let angstHtml = '';
             angstStories.forEach((story, index) => {
                 angstHtml += renderStoryCard(story, index + 1);
             });
-            $('#angst-container').html(angstHtml || '<div class="text-center w-100">Chưa có truyện Angst</div>');
+            $('#angst-container').html(angstHtml || '<div class="text-center w-100">No Angst stories yet</div>');
             
-            // truyện độc quyền
+            // exclusive stories
             let exclusiveHtml = '';
             exclusiveStories.forEach(story => {
                 exclusiveHtml += renderExclusiveCard(story);
             });
-            $('#exclusiveStoriesPreview').html(exclusiveHtml || '<div class="col-12 text-center">Chưa có truyện độc quyền</div>');
+            $('#exclusiveStoriesPreview').html(exclusiveHtml || '<div class="col-12 text-center">No exclusive stories yet</div>');
         }
         
         function renderStoryCard(story, rank) {
@@ -614,7 +614,7 @@
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="story-card" onclick="openStory('${story.id}')">
                         <div class="story-cover">
-                            <span class="story-badge badge-exclusive">ĐỘC QUYỀN</span>
+                            <span class="story-badge badge-exclusive">EXCLUSIVE</span>
                             <img src="${story.coverImage || 'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${story.title}">
                         </div>
                         <div class="story-info">
@@ -630,7 +630,7 @@
             `;
         }
         
-        // Hàm escape HTML để tránh XSS
+        // Escape HTML to avoid XSS
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
