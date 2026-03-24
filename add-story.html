@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm truyện - Nightcord</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        :root {
+            --primary: #884499;
+            --secondary-1: #BB5688;
+            --secondary-2: #8888CC;
+            --border-color: #eaeaea;
+        }
+        body { background: #f2f2f2; font-family: 'Inter', sans-serif; }
+        .main-nav { background: white; border-bottom: 1px solid var(--border-color); padding: 0.5rem 0; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .add-story-container { max-width: 900px; margin: 40px auto; }
+        .form-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); margin-bottom: 30px; }
+        .upload-area { border: 2px dashed var(--border-color); border-radius: 16px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; margin-bottom: 20px; }
+        .upload-area:hover { border-color: var(--primary); background: rgba(136, 68, 153, 0.05); }
+        .upload-area.dragover { border-color: var(--primary); background: rgba(136, 68, 153, 0.1); }
+        .file-info { background: #f8f9fa; border-radius: 12px; padding: 15px; margin-top: 15px; }
+        .export-buttons .btn { margin: 5px; }
+        .preview-content { background: #f8f9fa; border-radius: 12px; padding: 20px; max-height: 300px; overflow-y: auto; font-size: 0.9rem; white-space: pre-wrap; }
+        @media (max-width: 768px) { .form-card { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg main-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="assets/img/logo.png" height="40" class="me-2" onerror="this.style.display='none'">
+                <span class="logo">Nightcord</span>
+            </a>
+            <div class="ms-auto">
+                <span id="userInfo" class="me-3"></span>
+                <button class="btn btn-outline-danger" onclick="logout()" id="logoutBtn" style="display:none;">Đăng xuất</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container add-story-container">
+        <div class="form-card">
+            <h2 class="mb-4" style="color: var(--primary);"><i class="fas fa-plus-circle me-2"></i>Thêm truyện mới</h2>
+            
+            <!-- Upload File Area -->
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt fa-3x mb-3" style="color: var(--primary);"></i>
+                <h5>Kéo thả file vào đây hoặc click để chọn</h5>
+                <p class="text-muted">Hỗ trợ file: .txt, .docx</p>
+                <input type="file" id="fileInput" accept=".txt,.docx" style="display: none;">
+                <button class="btn btn-outline-primary mt-3" onclick="document.getElementById('fileInput').click()">Chọn file</button>
+            </div>
+            
+            <!-- File Info -->
+            <div id="fileInfo" class="file-info" style="display:none;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div><i class="fas fa-file-alt me-2"></i><span id="fileName"></span></div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="clearFile()">Xóa</button>
+                </div>
+            </div>
+            
+            <form id="storyForm">
+                <div class="row mt-3">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tên truyện *</label>
+                        <input type="text" class="form-control" id="title" required>
+                        <div class="invalid-feedback">Vui lòng nhập tên truyện</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tác giả *</label>
+                        <input type="text" class="form-control" id="author" required>
+                        <div class="invalid-feedback">Vui lòng nhập tên tác giả</div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mô tả * (tối thiểu 10 ký tự)</label>
+                    <textarea class="form-control" id="description" rows="2" required></textarea>
+                    <div class="invalid-feedback">Mô tả phải có ít nhất 10 ký tự</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Thể loại</label>
+                        <select class="form-select" id="genre">
+                            <option value="Romance">Romance</option>
+                            <option value="Fluff">Fluff</option>
+                            <option value="Angst">Angst</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Số chương</label>
+                        <input type="number" class="form-control" id="chapters" value="1" min="1">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Ảnh bìa URL</label>
+                        <input type="text" class="form-control" id="coverImage" placeholder="assets/img/placeholder.png">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nội dung truyện * (tối thiểu 20 ký tự)</label>
+                    <textarea class="form-control" id="content" rows="8" required></textarea>
+                    <div class="invalid-feedback">Nội dung phải có ít nhất 20 ký tự</div>
+                </div>
+                
+                <!-- Admin Exclusive Option -->
+                <div class="mb-3 form-check" id="exclusiveOption" style="display:none;">
+                    <input type="checkbox" class="form-check-input" id="exclusive">
+                    <label class="form-check-label">
+                        <span class="badge" style="background: #FF8C00;">Độc quyền bởi Nightcord</span> - Chỉ admin mới có quyền này
+                    </label>
+                </div>
+                
+                <button type="button" class="btn btn-primary w-100" onclick="saveStory()"><i class="fas fa-save me-2"></i>Đăng truyện</button>
+            </form>
+        </div>
+        
+        <!-- Export Section -->
+        <div class="form-card">
+            <h4 class="mb-3" style="color: var(--primary);"><i class="fas fa-download me-2"></i>Xuất dữ liệu</h4>
+            <p class="text-muted">Xuất truyện hiện tại sang các định dạng khác</p>
+            <div class="export-buttons">
+                <button class="btn btn-outline-success" onclick="exportAsJSON()"><i class="fas fa-file-code me-2"></i>JSON</button>
+                <button class="btn btn-outline-primary" onclick="exportAsTXT()"><i class="fas fa-file-alt me-2"></i>TXT</button>
+                <button class="btn btn-outline-danger" onclick="exportAsDOCX()"><i class="fas fa-file-word me-2"></i>DOCX</button>
+                <button class="btn btn-outline-info" onclick="exportAsPNG()"><i class="fas fa-image me-2"></i>PNG</button>
+            </div>
+        </div>
+        
+        <!-- Preview Section -->
+        <div class="form-card">
+            <h4 class="mb-3" style="color: var(--primary);"><i class="fas fa-eye me-2"></i>Xem trước</h4>
+            <div id="previewContent" class="preview-content">
+                <p class="text-muted text-center">Nội dung sẽ hiển thị tại đây</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="assets/js/storage.js"></script>
+    <script src="assets/js/file-handler.js"></script>
+    <script>
+        let currentUser = null;
+        let uploadedContent = '';
+        
+        function initAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                $('#userInfo').html(`<i class="fas fa-user-circle me-1"></i>${currentUser.name || currentUser.email}`);
+                $('#logoutBtn').show();
+                if (currentUser.role === 'admin') {
+                    $('#exclusiveOption').show();
+                }
+            } else {
+                $('#userInfo').html('<i class="fas fa-user-circle me-1"></i>Khách');
+                $('#logoutBtn').hide();
+            }
+        }
+        
+        function logout() { localStorage.removeItem('currentUser'); window.location.href = 'index.html'; }
+        
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file) processFile(file);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) processFile(e.target.files[0]);
+        });
+        
+        function processFile(file) {
+            const fileName = file.name;
+            const fileExt = fileName.split('.').pop().toLowerCase();
+            
+            $('#fileName').text(fileName);
+            $('#fileInfo').show();
+            
+            if (fileExt === 'txt') {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedContent = e.target.result;
+                    $('#content').val(uploadedContent);
+                    updatePreview();
+                };
+                reader.readAsText(file, 'UTF-8');
+            } else if (fileExt === 'docx') {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const arrayBuffer = e.target.result;
+                    extractTextFromDOCX(arrayBuffer, (text) => {
+                        uploadedContent = text;
+                        $('#content').val(uploadedContent);
+                        updatePreview();
+                    });
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert('Chỉ hỗ trợ file .txt hoặc .docx');
+                clearFile();
+            }
+        }
+        
+        function extractTextFromDOCX(arrayBuffer, callback) {
+            JSZip.loadAsync(arrayBuffer).then(zip => {
+                const file = zip.file("word/document.xml");
+                if (file) {
+                    file.async("string").then(xml => {
+                        const text = xml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+                        callback(text);
+                    });
+                } else callback('');
+            }).catch(() => callback('Không thể đọc file DOCX'));
+        }
+        
+        function clearFile() {
+            $('#fileInfo').hide();
+            fileInput.value = '';
+            uploadedContent = '';
+            $('#content').val('');
+            updatePreview();
+        }
+        
+        function updatePreview() {
+            const content = $('#content').val();
+            const title = $('#title').val() || 'Tiêu đề';
+            const author = $('#author').val() || 'Tác giả';
+            $('#previewContent').html(`
+                <h5>${title}</h5>
+                <p class="text-muted">Tác giả: ${author}</p>
+                <hr>
+                <div>${content.replace(/\n/g, '<br>') || 'Nội dung sẽ hiển thị tại đây...'}</div>
+            `);
+        }
+        
+        $('#title, #author, #content').on('input', updatePreview);
+        
+        function saveStory() {
+            const title = $('#title').val().trim();
+            const author = $('#author').val().trim();
+            const description = $('#description').val().trim();
+            const content = $('#content').val().trim();
+            
+            let isValid = true;
+            if (!title) { $('#title').addClass('is-invalid'); isValid = false; }
+            else { $('#title').removeClass('is-invalid'); }
+            if (!author) { $('#author').addClass('is-invalid'); isValid = false; }
+            else { $('#author').removeClass('is-invalid'); }
+            if (description.length < 10) { $('#description').addClass('is-invalid'); isValid = false; }
+            else { $('#description').removeClass('is-invalid'); }
+            if (content.length < 20) { $('#content').addClass('is-invalid'); isValid = false; }
+            else { $('#content').removeClass('is-invalid'); }
+            
+            if (!isValid) { alert('Vui lòng điền đầy đủ thông tin!'); return; }
+            
+            const isExclusive = $('#exclusive').is(':checked') && currentUser && currentUser.role === 'admin';
+            
+            const story = {
+                id: Date.now().toString(),
+                title: title,
+                author: author,
+                description: description,
+                genre: $('#genre').val(),
+                chapters: parseInt($('#chapters').val()) || 1,
+                rating: 4.5,
+                coverImage: $('#coverImage').val() || 'assets/img/placeholder.png',
+                exclusive: isExclusive,
+                userCreated: !isExclusive,
+                createdAt: new Date().toISOString(),
+                content: content
+            };
+            
+            StoryService.addStory(story);
+            alert(isExclusive ? 'Thêm truyện độc quyền thành công!' : 'Đăng truyện thành công!');
+            window.location.href = 'index.html';
+        }
+        
+        function exportAsJSON() {
+            const storyData = {
+                title: $('#title').val(),
+                author: $('#author').val(),
+                description: $('#description').val(),
+                genre: $('#genre').val(),
+                chapters: $('#chapters').val(),
+                content: $('#content').val(),
+                coverImage: $('#coverImage').val(),
+                exportedAt: new Date().toISOString()
+            };
+            const jsonStr = JSON.stringify(storyData, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            saveAs(blob, `${$('#title').val() || 'story'}.json`);
+            alert('Xuất JSON thành công!');
+        }
+        
+        function exportAsTXT() {
+            const content = `Tên truyện: ${$('#title').val()}\nTác giả: ${$('#author').val()}\nThể loại: ${$('#genre').val()}\nSố chương: ${$('#chapters').val()}\n\nMô tả:\n${$('#description').val()}\n\nNội dung:\n${$('#content').val()}`;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            saveAs(blob, `${$('#title').val() || 'story'}.txt`);
+            alert('Xuất TXT thành công!');
+        }
+        
+        function exportAsDOCX() {
+            const content = `Tên truyện: ${$('#title').val()}\nTác giả: ${$('#author').val()}\nThể loại: ${$('#genre').val()}\nSố chương: ${$('#chapters').val()}\n\nMô tả:\n${$('#description').val()}\n\nNội dung:\n${$('#content').val()}`;
+            const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+            saveAs(blob, `${$('#title').val() || 'story'}.docx`);
+            alert('Xuất DOCX thành công! (Lưu ý: Đây là file text đơn giản)');
+        }
+        
+        function exportAsPNG() {
+            const element = document.getElementById('previewContent');
+            html2canvas(element).then(canvas => {
+                canvas.toBlob(blob => {
+                    saveAs(blob, `${$('#title').val() || 'story'}.png`);
+                    alert('Xuất PNG thành công!');
+                });
+            }).catch(() => alert('Không thể xuất PNG'));
+        }
+        
+        $(document).ready(() => {
+            initAuth();
+            updatePreview();
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>

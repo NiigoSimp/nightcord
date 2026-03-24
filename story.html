@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đọc truyện - Nightcord</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        :root { --primary: #884499; --secondary-1: #BB5688; --border-color: #eaeaea; }
+        body { background: #f2f2f2; font-family: 'Inter', sans-serif; }
+        .main-nav { background: white; border-bottom: 1px solid var(--border-color); padding: 0.5rem 0; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .reader-container { max-width: 800px; margin: 40px auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .story-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        .story-meta { color: #888; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .story-content { line-height: 1.8; font-size: 1.1rem; color: #333; white-space: pre-wrap; }
+        .exclusive-badge { background: #FF8C00; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
+        .user-badge { background: var(--secondary-1); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
+        @media (max-width: 768px) { .reader-container { padding: 20px; } .story-title { font-size: 1.5rem; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg main-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2"><span class="logo">Nightcord</span></a>
+        </div>
+    </nav>
+
+    <div class="container reader-container">
+        <div id="storyContent"></div>
+        <div class="text-center mt-4"><a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại trang chủ</a></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="assets/js/storage.js"></script>
+    <script>
+        function getStoryId() { const params = new URLSearchParams(window.location.search); return params.get('id'); }
+        
+        function loadStory() {
+            const id = getStoryId();
+            const story = StoryService.getStoryById(id);
+            if (!story) { document.getElementById('storyContent').innerHTML = '<h2 class="text-center">Không tìm thấy truyện</h2>'; return; }
+            
+            let badge = '';
+            if (story.exclusive) badge = '<span class="exclusive-badge">Độc quyền Nightcord</span>';
+            else if (story.userCreated) badge = '<span class="user-badge">Truyện người dùng</span>';
+            
+            document.getElementById('storyContent').innerHTML = `
+                <h1 class="story-title">${story.title} ${badge}</h1>
+                <div class="story-meta">Tác giả: ${story.author} | Thể loại: ${story.genre} | ${story.chapters} chương | ★ ${story.rating}</div>
+                <div class="story-content">${(story.content || 'Nội dung đang được cập nhật...').replace(/\n/g, '<br>')}</div>
+            `;
+        }
+        
+        $(document).ready(()=>{ loadStory(); });
+    </script>
+</body>
+</html>

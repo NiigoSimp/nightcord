@@ -3,1032 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý truyện - Đọc Truyện Online</title>
-    
-    <!-- Bootstrap CSS -->
+    <title>Kho truyện - Nightcord Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- jQuery UI CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Dark Mode CSS -->
-    <link rel="stylesheet" href="assets/css/dark-mode.css">
     <style>
-        /* Webtoon Style Overrides - Chỉ dùng 5 màu đã cho */
-        :root {
-            --webtoon-bg: #f2f2f2;
-            --webtoon-card-bg: #ffffff;
-            --webtoon-border: #eaeaea;
-            --webtoon-hover: #f8f9fa;
-            
-            /* 5 màu chính */
-            --primary: #884499;
-            --secondary-1: #BB5688;
-            --secondary-2: #8888CC;
-            --accent-1: #CCAA88;
-            --accent-2: #DDAACC;
-        }
-        
-        body {
-            background-color: var(--webtoon-bg);
-            font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        
-        /* Webtoon Navbar - GIỐNG INDEX */
-        .webtoon-nav {
-            background: white;
-            border-bottom: 1px solid var(--webtoon-border);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-            padding: 0.5rem 0;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        
-        .webtoon-logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-1) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .webtoon-nav-link {
-            font-weight: 600;
-            color: #333 !important;
-            padding: 0.5rem 1rem !important;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-        
-        .webtoon-nav-link.active {
-            color: var(--primary) !important;
-        }
-        
-        .webtoon-nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 1rem;
-            right: 1rem;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
-            border-radius: 3px 3px 0 0;
-        }
-        
-        /* Dark mode toggle button animation */
-        #darkModeToggle {
-            transition: all 0.3s ease;
-        }
-        
-        #darkModeToggle:hover {
-            transform: rotate(180deg);
-        }
-        
-        /* Cards */
-        .card {
-            background: white;
-            border: 1px solid var(--webtoon-border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .card:hover {
-            box-shadow: 0 8px 25px rgba(136, 68, 153, 0.1);
-            border-color: var(--secondary-2);
-        }
-        
-        .card-header {
-            background: white;
-            border-bottom: 1px solid var(--webtoon-border);
-            padding: 1rem 1.5rem;
-            font-weight: 600;
-        }
-        
-        .card-body {
-            padding: 1.5rem;
-        }
-        
-        /* Story Cards - Thay thế Task Cards */
-        .story-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            border: 1px solid var(--webtoon-border);
-            transition: all 0.3s;
-            height: 100%;
-            margin-bottom: 20px;
-        }
-        
-        .story-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(136, 68, 153, 0.1);
-            border-color: var(--secondary-2);
-        }
-        
-        .story-cover {
-            position: relative;
-            aspect-ratio: 3/4;
-            overflow: hidden;
-            background: #f5f5f5;
-        }
-        
-        .story-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        
-        .story-card:hover .story-cover img {
-            transform: scale(1.05);
-        }
-        
-        .story-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: white;
-            z-index: 2;
-        }
-        
-        .story-rank {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: var(--accent-2);
-            color: #333;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .story-info {
-            padding: 15px;
-        }
-        
-        .story-title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: #333;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            transition: color 0.3s ease;
-        }
-        
-        .story-author {
-            font-size: 0.85rem;
-            color: #888;
-            margin-bottom: 8px;
-        }
-        
-        .story-meta {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.8rem;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .story-rating {
-            color: #FFB800;
-            font-weight: 600;
-        }
-        
-        .story-chapters {
-            color: #888;
-        }
-        
-        .story-priority {
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
-        }
-        
-        .priority-high {
-            background: var(--primary);
-        }
-        
-        .priority-medium {
-            background: var(--secondary-1);
-        }
-        
-        .priority-low {
-            background: var(--secondary-2);
-        }
-        
-        .story-description {
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 10px;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        
-        .story-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-        
-        .story-status {
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-        
-        .status-ongoing {
-            background: var(--secondary-2);
-            color: white;
-        }
-        
-        .status-completed {
-            background: var(--secondary-1);
-            color: white;
-        }
-        
-        .status-hiatus {
-            background: var(--accent-1);
-            color: #333;
-        }
-        
-        .story-date {
-            color: #888;
-        }
-        
-        .story-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: flex-end;
-            border-top: 1px solid var(--webtoon-border);
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-        
-        /* Table View for Stories */
-        .story-table-img {
-            width: 50px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-        
-        .story-table-title {
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        .story-table-author {
-            font-size: 0.85rem;
-            color: #888;
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: var(--primary);
-            border-color: var(--primary);
-            transition: all 0.3s ease;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #6a3677;
-            border-color: #6a3677;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(136, 68, 153, 0.3);
-        }
-        
-        .btn-outline-primary {
-            border-color: var(--primary);
-            color: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-outline-secondary {
-            border-color: var(--webtoon-border);
-            color: #666;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline-secondary:hover {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-outline-success {
-            border-color: var(--secondary-2);
-            color: var(--secondary-2);
-        }
-        
-        .btn-outline-success:hover {
-            background: var(--secondary-2);
-            border-color: var(--secondary-2);
-            color: white;
-        }
-        
-        .btn-outline-danger {
-            border-color: var(--secondary-1);
-            color: var(--secondary-1);
-        }
-        
-        .btn-outline-danger:hover {
-            background: var(--secondary-1);
-            border-color: var(--secondary-1);
-            color: white;
-        }
-        
-        .btn-outline-info {
-            border-color: var(--accent-2);
-            color: #333;
-        }
-        
-        .btn-outline-info:hover {
-            background: var(--accent-2);
-            border-color: var(--accent-2);
-            color: #333;
-        }
-        
-        .btn-outline-warning {
-            border-color: var(--accent-1);
-            color: #333;
-        }
-        
-        .btn-outline-warning:hover {
-            background: var(--accent-1);
-            border-color: var(--accent-1);
-            color: #333;
-        }
-        
-        /* Forms */
-        .form-control, .form-select {
-            border: 1px solid var(--webtoon-border);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 0.2rem rgba(136, 68, 153, 0.25);
-        }
-        
-        .input-group-text {
-            background: #f8f9fa;
-            border: 1px solid var(--webtoon-border);
-            color: #666;
-        }
-        
-        /* Pagination */
-        .pagination {
-            margin-bottom: 0;
-        }
-        
-        .page-link {
-            background: white;
-            border: 1px solid var(--webtoon-border);
-            color: #333;
-            transition: all 0.3s ease;
-        }
-        
-        .page-link:hover {
-            background: var(--secondary-2);
-            border-color: var(--secondary-2);
-            color: white;
-        }
-        
-        .page-item.active .page-link {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-        
-        /* Footer - GIỐNG INDEX */
-        .footer {
-            background: white;
-            border-top: 1px solid var(--webtoon-border);
-            padding: 40px 0 20px;
-            margin-top: 40px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        
-        .footer h5 {
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        .footer p {
-            color: #666;
-        }
-        
-        .footer ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer ul li a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer ul li a:hover {
-            color: var(--primary);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-links a {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--accent-2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #333;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-        
-        .social-links a:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* Modal */
-        .modal-content {
-            border: none;
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        
-        .modal-header {
-            border-bottom: 1px solid var(--webtoon-border);
-        }
-        
-        .modal-footer {
-            border-top: 1px solid var(--webtoon-border);
-        }
-        
-        .modal-header .btn-close {
-            transition: all 0.3s ease;
-        }
-        
-        .modal-header .btn-close:hover {
-            transform: rotate(90deg);
-        }
-        
-        /* Toast */
-        .toast {
-            background: white;
-            border: 1px solid var(--webtoon-border);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        
-        .toast-header {
-            color: white;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .toast-body {
-            color: #333;
-        }
-        
-        /* Empty State */
-        #emptyState img {
-            opacity: 0.7;
-        }
-        
-        #emptyState h4 {
-            color: var(--secondary-2);
-        }
-        
-        #emptyState p {
-            color: #666;
-        }
-        
-        /* Drag & Drop */
-        .ui-sortable-helper {
-            transform: rotate(2deg) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-        
-        .ui-sortable-placeholder {
-            visibility: visible !important;
-            background-color: rgba(136, 136, 204, 0.1);
-            border: 2px dashed var(--secondary-2);
-            border-radius: 12px;
-            min-height: 200px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .table {
-                font-size: 0.85rem;
-            }
-            
-            .btn-group {
-                width: 100%;
-            }
-            
-            .btn-group .btn {
-                flex: 1;
-            }
-            
-            .story-actions {
-                flex-direction: column;
-            }
-            
-            .story-actions .btn {
-                width: 100%;
-            }
-        }
-        
-        /* Genre filter highlight */
-        .genre-option {
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid transparent;
-        }
-        
-        .genre-option:hover {
-            border-color: var(--secondary-2);
-            background: rgba(136, 136, 204, 0.1);
-        }
-        
-        .genre-option.active {
-            background: var(--primary);
-            color: white;
-        }
+        :root { --primary: #884499; --secondary-1: #BB5688; --border-color: #eaeaea; }
+        body { background: #f2f2f2; font-family: 'Inter', sans-serif; }
+        .main-nav { background: white; border-bottom: 1px solid var(--border-color); padding: 0.5rem 0; }
+        .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .story-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: all 0.3s ease; border: 1px solid var(--border-color); height: 100%; cursor: pointer; margin-bottom: 20px; }
+        .story-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(136, 68, 153, 0.1); border-color: var(--secondary-2); }
+        .story-cover { position: relative; aspect-ratio: 3/4; overflow: hidden; }
+        .story-cover img { width: 100%; height: 100%; object-fit: cover; }
+        .story-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: white; z-index: 2; }
+        .badge-romance { background: var(--primary); }
+        .badge-fluff { background: var(--secondary-1); }
+        .badge-angst { background: var(--secondary-2); }
+        .badge-exclusive { background: #FF8C00; }
+        .story-info { padding: 15px; }
+        .story-title { font-weight: 700; font-size: 1rem; margin-bottom: 5px; color: #333; }
+        .story-creator { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
+        .story-meta { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; flex-wrap: wrap; }
+        .story-rating { color: #FFB800; font-weight: 600; }
+        .story-chapters { color: #888; }
+        .story-exclusive { font-size: 0.7rem; background: #FF8C00; color: white; padding: 2px 8px; border-radius: 12px; }
+        .filter-section { background: white; border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-color); }
+        .btn-primary { background: var(--primary); border-color: var(--primary); }
+        .admin-card { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        @media (max-width: 768px) { .filter-section .row > div { margin-bottom: 15px; } }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-<nav class="navbar navbar-expand-lg main-nav sticky-top">
-    <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
-            <img src="assets/img/logo.png" alt="Đọc Truyện Online" height="40" class="me-2">
-            <span class="logo">Nightcord</span>
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="index.html">
-                        Trang chủ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom active" href="tasks.html">
-                        Kho truyện
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link nav-link-custom" href="about.html">
-                        Thống kê
-                    </a>
-                </li>
-            </ul>
-            
-            <div class="d-flex align-items-center gap-2">
-                <!-- Dark mode button -->
-                <button class="btn" id="darkModeToggle">
-                    <i class="fas fa-moon"></i>
-                </button>
-                <!-- User dropdown -->
-                <div class="dropdown">
-                    <button class="btn rounded-pill px-4" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1)); border: none; color: white;" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-2"></i>Tài khoản
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
-                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#registerModal"><i class="fas fa-user-plus me-2"></i>Đăng ký</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
-                    </ul>
-                </div>
-            </div>
+    <nav class="navbar navbar-expand-lg main-nav sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2"><span class="logo">Nightcord Admin</span></a>
+            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Đăng xuất</button></div>
         </div>
-    </div>
-</nav>
-    <!-- Main Content - Quản lý truyện -->
+    </nav>
+
     <main class="container my-4">
-        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 style="color: var(--primary);">
-                <i class="fas fa-books me-2"></i>Quản lý kho truyện
-                <span class="badge ms-2" style="background: var(--secondary-1); color: white;" id="totalStories">0</span>
-            </h2>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#storyModal" onclick="openAddModal()">
-                <i class="fas fa-plus-circle me-2"></i>Thêm truyện mới
-            </button>
+            <h2 style="color: var(--primary);"><i class="fas fa-books me-2"></i>Kho truyện Nightcord</h2>
         </div>
 
-        <!-- Search & Filter Section -->
-        <div class="card mb-4">
-            <div class="card-body">
-                <div class="row g-3">
-                    <!-- Search -->
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold" style="color: var(--secondary-2);">
-                            <i class="fas fa-search me-1"></i>Tìm kiếm
-                        </label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-search"></i></span>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo tên truyện, tác giả..." onkeyup="applyFilters()">
-                        </div>
-                    </div>
-                    
-                    <!-- Filter by Genre -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold" style="color: var(--secondary-1);">
-                            <i class="fas fa-filter me-1"></i>Thể loại
-                        </label>
-                        <select class="form-select" id="filterGenre" onchange="applyFilters()">
-                            <option value="all">Tất cả</option>
-                            <option value="Romantic">Romantic</option>
-                            <option value="Fluff">Fluff</option>
-                            <option value="Angst">Angst</option>
-                            <option value="Hành động">Hành động</option>
-                            <option value="Hài hước">Hài hước</option>
-                            <option value="Kinh dị">Kinh dị</option>
-                            <option value="Fantasy">Fantasy</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Filter by Status -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold" style="color: var(--accent-1);">
-                            <i class="fas fa-flag me-1"></i>Trạng thái
-                        </label>
-                        <select class="form-select" id="filterStatus" onchange="applyFilters()">
-                            <option value="all">Tất cả</option>
-                            <option value="Đang tiến hành">Đang tiến hành</option>
-                            <option value="Hoàn thành">Hoàn thành</option>
-                            <option value="Tạm ngưng">Tạm ngưng</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Sort -->
-                    <div class="col-md-2">
-                        <label class="form-label fw-bold" style="color: var(--accent-2);">
-                            <i class="fas fa-sort me-1"></i>Sắp xếp
-                        </label>
-                        <select class="form-select" id="sortBy" onchange="applyFilters()">
-                            <option value="date_desc">Mới nhất</option>
-                            <option value="date_asc">Cũ nhất</option>
-                            <option value="title_asc">Tên A-Z</option>
-                            <option value="title_desc">Tên Z-A</option>
-                            <option value="rating_desc">Đánh giá cao nhất</option>
-                        </select>
-                    </div>
-                    
-                    <!-- Clear Filters -->
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">
-                            <i class="fas fa-times me-1"></i>Xóa bộ lọc
-                        </button>
-                    </div>
+        <!-- Form thêm truyện độc quyền -->
+        <div class="admin-card">
+            <h4 class="mb-3" style="color: #FF8C00;"><i class="fas fa-crown me-2"></i>Thêm truyện độc quyền Nightcord</h4>
+            <form id="adminStoryForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3"><label class="form-label">Tên truyện *</label><input type="text" class="form-control" id="adminTitle" required></div>
+                    <div class="col-md-6 mb-3"><label class="form-label">Tác giả *</label><input type="text" class="form-control" id="adminAuthor" required></div>
                 </div>
-                
-                <!-- Active filters display -->
-                <div class="mt-3" id="activeFilters"></div>
+                <div class="mb-3"><label class="form-label">Mô tả *</label><textarea class="form-control" id="adminDescription" rows="2" required></textarea></div>
+                <div class="row">
+                    <div class="col-md-4 mb-3"><label class="form-label">Thể loại</label><select class="form-select" id="adminGenre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Số chương</label><input type="number" class="form-control" id="adminChapters" value="1"></div>
+                    <div class="col-md-4 mb-3"><label class="form-label">Đánh giá</label><input type="number" class="form-control" id="adminRating" step="0.1" value="4.5"></div>
+                </div>
+                <div class="mb-3"><label class="form-label">Ảnh bìa URL</label><input type="text" class="form-control" id="adminCover" placeholder="assets/img/placeholder.png"></div>
+                <div class="mb-3"><label class="form-label">Nội dung truyện *</label><textarea class="form-control" id="adminContent" rows="4" required></textarea></div>
+                <button type="button" class="btn btn-primary" onclick="addExclusiveStory()"><i class="fas fa-save me-2"></i>Thêm truyện độc quyền</button>
+            </form>
+        </div>
+
+        <!-- Filter và danh sách truyện -->
+        <div class="filter-section">
+            <div class="row g-3">
+                <div class="col-md-4"><label class="form-label fw-bold">🔍 Tìm kiếm</label><input type="text" class="form-control" id="searchInput" placeholder="Tên truyện, tác giả..."></div>
+                <div class="col-md-3"><label class="form-label fw-bold">📚 Thể loại</label><select class="form-select" id="filterGenre"><option value="all">Tất cả</option><option value="Romance">Romance</option><option value="Fluff">Fluff</option><option value="Angst">Angst</option></select></div>
+                <div class="col-md-3"><label class="form-label fw-bold">🏷️ Nguồn</label><select class="form-select" id="filterSource"><option value="all">Tất cả</option><option value="exclusive">Độc quyền Nightcord</option><option value="default">Truyện mặc định</option><option value="user">Truyện người dùng</option></select></div>
+                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-secondary w-100" onclick="clearFilters()">Xóa lọc</button></div>
             </div>
         </div>
 
-        <!-- Stories Table/Card View -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <!-- Toggle view buttons -->
-                <div class="btn-group mb-3">
-                    <button class="btn btn-outline-primary" onclick="toggleView('table')" id="viewTableBtn">
-                        <i class="fas fa-table me-1"></i>Bảng
-                    </button>
-                    <button class="btn btn-outline-primary active" onclick="toggleView('card')" id="viewCardBtn">
-                        <i class="fas fa-th-large me-1"></i>Thẻ
-                    </button>
-                </div>
-                
-                <!-- Table View -->
-                <div id="tableView" class="view-hidden">
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead style="background: linear-gradient(135deg, var(--primary), var(--secondary-2));">
-                                <tr>
-                                    <th>#</th>
-                                    <th>Ảnh</th>
-                                    <th>Tên truyện</th>
-                                    <th>Tác giả</th>
-                                    <th>Thể loại</th>
-                                    <th>Đánh giá</th>
-                                    <th>Chương</th>
-                                    <th>Trạng thái</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="storyTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- Card View -->
-                <div id="cardView" class="view-active">
-                    <div class="row g-4" id="storyCardContainer"></div>
-                </div>
-                
-                <!-- Empty state -->
-                <div id="emptyState" class="text-center py-5" style="display: none;">
-                    <img src="assets/img/empty.svg" alt="No stories" style="max-width: 200px;">
-                    <h4 class="mt-3">Chưa có truyện nào</h4>
-                    <p>Hãy thêm truyện mới để bắt đầu quản lý!</p>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#storyModal" onclick="openAddModal()">
-                        <i class="fas fa-plus-circle me-2"></i>Thêm truyện đầu tiên
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pagination -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <span id="showingInfo">Hiển thị 1-8 của 0 truyện</span>
-            </div>
-            <nav>
-                <ul class="pagination" id="pagination"></ul>
-            </nav>
-        </div>
-
-        <!-- Export/Import Section -->
-        <div class="card mt-4">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h6 class="fw-bold" style="color: var(--secondary-2);">
-                            <i class="fas fa-database me-2"></i>Quản lý dữ liệu
-                        </h6>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-danger" onclick="confirmClearAll()">
-                                <i class="fas fa-trash-alt me-1"></i>Xóa tất cả
-                            </button>
-                            <button class="btn btn-outline-success" onclick="exportJSON()">
-                                <i class="fas fa-download me-1"></i>Xuất JSON
-                            </button>
-                            <label class="btn btn-outline-info">
-                                <i class="fas fa-upload me-1"></i>Nhập JSON
-                                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importJSON(this)">
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="alert alert-info mb-0">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Dữ liệu được tự động lưu vào LocalStorage. Làm mới trang vẫn giữ dữ liệu!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="storiesContainer" class="row g-4"></div>
+        <div id="emptyState" class="text-center py-5" style="display:none;"><img src="assets/img/empty.svg" style="max-width: 150px;"><h4 class="mt-3">Không tìm thấy truyện</h4></div>
+        <div class="d-flex justify-content-between align-items-center mt-4"><div><span id="showingInfo"></span></div><nav><ul class="pagination" id="pagination"></ul></nav></div>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Đọc Truyện Online</h5>
-                    <p>Quản lý kho truyện theo phong cách Webtoon</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Liên kết nhanh</h5>
-                    <ul>
-                        <li><a href="index.html">Trang chủ</a></li>
-                        <li><a href="tasks.html">Kho truyện</a></li>
-                        <li><a href="about.html">Thống kê</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Theo dõi</h5>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <p class="mb-0">© 2024 Đọc Truyện Online - 5 màu: #884499, #BB5688, #8888CC, #CCAA88, #DDAACC</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Story Modal (Add/Edit) -->
-    <div class="modal fade" id="storyModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-2));">
-                    <h5 class="modal-title text-white" id="modalTitle">
-                        <i class="fas fa-plus-circle me-2"></i>Thêm truyện mới
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="storyForm">
-                        <input type="hidden" id="storyId">
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tên truyện <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="title" placeholder="Nhập tên truyện">
-                                <div class="invalid-feedback" id="titleError">Tên truyện không được để trống</div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tác giả <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="author" placeholder="Nhập tên tác giả">
-                                <div class="invalid-feedback" id="authorError">Tên tác giả không được để trống</div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label class="form-label">Mô tả <span class="text-danger">*</span></label>
-                            <textarea class="form-control" id="description" rows="3" placeholder="Nhập mô tả (tối thiểu 10 ký tự)"></textarea>
-                            <div class="invalid-feedback" id="descError">Mô tả phải có ít nhất 10 ký tự</div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Thể loại <span class="text-danger">*</span></label>
-                                <select class="form-select" id="genre">
-                                    <option value="">Chọn thể loại</option>
-                                    <option value="Romantic">Romantic</option>
-                                    <option value="Fluff">Fluff</option>
-                                    <option value="Angst">Angst</option>
-                                    <option value="Hành động">Hành động</option>
-                                    <option value="Hài hước">Hài hước</option>
-                                    <option value="Kinh dị">Kinh dị</option>
-                                    <option value="Fantasy">Fantasy</option>
-                                </select>
-                                <div class="invalid-feedback" id="genreError">Vui lòng chọn thể loại</div>
-                            </div>
-                            
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Ngày đăng</label>
-                                <input type="date" class="form-control" id="publishDate">
-                                <div class="invalid-feedback" id="dateError">Ngày đăng không hợp lệ</div>
-                            </div>
-                            
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Trạng thái</label>
-                                <select class="form-select" id="status">
-                                    <option value="Đang tiến hành">Đang tiến hành</option>
-                                    <option value="Hoàn thành">Hoàn thành</option>
-                                    <option value="Tạm ngưng">Tạm ngưng</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Số chương</label>
-                                <input type="number" class="form-control" id="chapters" value="0" min="0">
-                            </div>
-                            
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Đánh giá</label>
-                                <input type="number" class="form-control" id="rating" value="4.5" step="0.1" min="0" max="5">
-                            </div>
-                            
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Độ ưu tiên</label>
-                                <select class="form-select" id="priority">
-                                    <option value="Thấp">Thấp</option>
-                                    <option value="Trung bình" selected>Trung bình</option>
-                                    <option value="Cao">Cao</option>
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Ảnh bìa</label>
-                                <input type="text" class="form-control" id="coverImage" placeholder="URL ảnh bìa">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" onclick="saveStory()" id="saveBtn">
-                        <i class="fas fa-save me-2"></i>Lưu truyện
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Delete Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Xác nhận xóa</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa truyện <strong id="deleteStoryTitle"></strong>?</p>
-                    <p class="text-danger"><small>Hành động này không thể hoàn tác!</small></p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Xóa</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header" id="toastHeader">
-                <i class="fas fa-info-circle me-2" id="toastIcon"></i>
-                <strong class="me-auto" id="toastTitle">Thông báo</strong>
-                <small>vừa xong</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body" id="toastMessage"></div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/storage.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/stories.js"></script>
     <script>
-        $(document).ready(function() {
-            loadStories();
-            setupRealtimeValidation();
-            setupDragDrop();
-        });
+        let currentStories = [], filteredStories = [], currentPage = 1, itemsPerPage = 8;
         
-        // Hàm logout tạm thời
-        function logout() {
-            alert('Đã đăng xuất!');
-            window.location.href = 'index.html';
+        function initAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (!user) window.location.href = 'index.html';
+            else {
+                const userData = JSON.parse(user);
+                if (userData.role !== 'admin') window.location.href = 'index.html';
+            }
         }
+        
+        function logout() { localStorage.removeItem('currentUser'); window.location.href = 'index.html'; }
+        function openStory(id) { window.location.href = `story.html?id=${id}`; }
+        
+        function addExclusiveStory() {
+            const title = $('#adminTitle').val().trim();
+            const author = $('#adminAuthor').val().trim();
+            const description = $('#adminDescription').val().trim();
+            const content = $('#adminContent').val().trim();
+            
+            if (!title || !author || !description || !content) {
+                alert('Vui lòng điền đầy đủ thông tin!');
+                return;
+            }
+            
+            const story = {
+                id: Date.now().toString(),
+                title: title,
+                author: author,
+                description: description,
+                genre: $('#adminGenre').val(),
+                chapters: parseInt($('#adminChapters').val()) || 1,
+                rating: parseFloat($('#adminRating').val()) || 4.5,
+                coverImage: $('#adminCover').val() || 'assets/img/placeholder.png',
+                exclusive: true,
+                userCreated: false,
+                createdAt: new Date().toISOString(),
+                content: content
+            };
+            
+            StoryService.addStory(story);
+            alert('Thêm truyện độc quyền thành công!');
+            $('#adminStoryForm')[0].reset();
+            loadStories();
+        }
+        
+        function loadStories() {
+            currentStories = StoryService.getAllStories();
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            const search = $('#searchInput').val().toLowerCase();
+            const genre = $('#filterGenre').val();
+            const source = $('#filterSource').val();
+            
+            filteredStories = currentStories.filter(s => {
+                if (search && !s.title.toLowerCase().includes(search) && !s.author.toLowerCase().includes(search)) return false;
+                if (genre !== 'all' && s.genre !== genre) return false;
+                if (source === 'exclusive' && !s.exclusive) return false;
+                if (source === 'default' && (s.exclusive || s.userCreated)) return false;
+                if (source === 'user' && !s.userCreated) return false;
+                return true;
+            });
+            currentPage = 1; 
+            renderStories(); 
+            updatePagination();
+        }
+        
+        function renderStories() {
+            const start = (currentPage-1)*itemsPerPage, end = start+itemsPerPage, page = filteredStories.slice(start,end);
+            let html = '';
+            page.forEach(s => {
+                let badgeClass, badgeText;
+                if (s.exclusive) { badgeClass = 'badge-exclusive'; badgeText = 'ĐỘC QUYỀN'; }
+                else if (s.userCreated) { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre + ' (User)'; }
+                else { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre; }
+                
+                html += `<div class="col-lg-3 col-md-4 col-sm-6"><div class="story-card" onclick="openStory('${s.id}')"><div class="story-cover"><span class="story-badge ${badgeClass}">${badgeText}</span><img src="${s.coverImage||'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${s.title}"></div><div class="story-info"><h3 class="story-title">${s.title}</h3><div class="story-creator">${s.author}</div><div class="story-meta"><span class="story-rating">★ ${s.rating}</span><span class="story-chapters">${s.chapters} chap</span>${s.exclusive ? '<span class="story-exclusive">Nightcord</span>' : ''}</div></div></div></div>`;
+            });
+            $('#storiesContainer').html(html);
+            $('#emptyState').toggle(filteredStories.length===0);
+            $('#showingInfo').text(`Hiển thị ${start+1}-${Math.min(end,filteredStories.length)} của ${filteredStories.length} truyện`);
+        }
+        
+        function updatePagination() {
+            let pages = Math.ceil(filteredStories.length/itemsPerPage), html='';
+            for(let i=1;i<=pages;i++) html+=`<li class="page-item ${i===currentPage?'active':''}"><a class="page-link" href="#" onclick="changePage(${i});return false;">${i}</a></li>`;
+            $('#pagination').html(html);
+        }
+        
+        function changePage(p) { currentPage=p; renderStories(); }
+        function clearFilters() { $('#searchInput').val(''); $('#filterGenre').val('all'); $('#filterSource').val('all'); applyFilters(); }
+        
+        $(document).ready(()=>{ initAuth(); loadStories(); $('#searchInput, #filterGenre, #filterSource').on('input change', applyFilters); });
     </script>
 </body>
 </html>

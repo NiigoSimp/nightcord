@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đọc Truyện Online</title>
+    <title>Nightcord - Đọc Truyện Online</title>
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,23 +11,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <!-- Dark Mode CSS -->
-    <link rel="stylesheet" href="assets/css/dark-mode.css">
     <style>
-        /* Style Overrides - Chỉ dùng 5 màu đã cho */
         :root {
             --bg-color: #f2f2f2;
             --card-bg: #ffffff;
             --border-color: #eaeaea;
-            --hover-bg: #f8f9fa;
-            
-            /* 5 màu chính */
             --primary: #884499;
             --secondary-1: #BB5688;
             --secondary-2: #8888CC;
@@ -38,26 +30,20 @@
         body {
             background-color: var(--bg-color);
             font-family: 'Inter', sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
-        /* Navbar */
         .main-nav {
             background: white;
             border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
             padding: 0.5rem 0;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
         .logo {
             font-size: 1.8rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary-1) 100%);
+            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .nav-link-custom {
@@ -65,7 +51,6 @@
             color: #333 !important;
             padding: 0.5rem 1rem !important;
             position: relative;
-            transition: color 0.3s ease;
         }
         
         .nav-link-custom.active {
@@ -80,31 +65,83 @@
             right: 1rem;
             height: 3px;
             background: linear-gradient(135deg, var(--primary), var(--secondary-1));
-            border-radius: 3px 3px 0 0;
+            border-radius: 3px;
         }
         
-        /* Dark mode toggle button animation */
-        #darkModeToggle {
-            transition: all 0.3s ease;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border-color);
-            background: transparent;
-            color: #666;
+        /* Banner carousel */
+        .banner-carousel {
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .banner-slide {
+            position: relative;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        
-        #darkModeToggle:hover {
-            transform: rotate(180deg);
-            background: var(--primary);
+            text-align: center;
             color: white;
-            border-color: var(--primary);
         }
         
-        /* Cards */
+        .banner-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .banner-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+        
+        .banner-content h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .banner-content p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+        
+        .banner-btn {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .carousel-control-prev, .carousel-control-next {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .banner-carousel:hover .carousel-control-prev,
+        .banner-carousel:hover .carousel-control-next {
+            opacity: 1;
+        }
+        
         .story-card {
             background: white;
             border-radius: 12px;
@@ -114,7 +151,8 @@
             border: 1px solid var(--border-color);
             height: 100%;
             cursor: pointer;
-            max-width: 250px;
+            width: 100%;
+            max-width: 280px;
             margin: 0 auto;
         }
         
@@ -128,7 +166,6 @@
             position: relative;
             aspect-ratio: 3/4;
             overflow: hidden;
-            background: #f5f5f5;
         }
         
         .story-cover img {
@@ -150,21 +187,14 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
-            z-index: 2;
             color: white;
+            z-index: 2;
         }
         
-        .badge-romance {
-            background: var(--primary);
-        }
-        
-        .badge-fluff {
-            background: var(--secondary-1);
-        }
-        
-        .badge-angst {
-            background: var(--secondary-2);
-        }
+        .badge-romance { background: var(--primary); }
+        .badge-fluff { background: var(--secondary-1); }
+        .badge-angst { background: var(--secondary-2); }
+        .badge-exclusive { background: #FF8C00; }
         
         .story-rank {
             position: absolute;
@@ -181,8 +211,6 @@
             font-weight: 700;
             font-size: 0.9rem;
             z-index: 2;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background-color 0.3s ease, color 0.3s ease;
         }
         
         .story-info {
@@ -197,20 +225,18 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            transition: color 0.3s ease;
         }
         
         .story-creator {
             font-size: 0.8rem;
             color: #888;
             margin-bottom: 8px;
-            transition: color 0.3s ease;
         }
         
         .story-meta {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             font-size: 0.75rem;
             flex-wrap: wrap;
         }
@@ -220,147 +246,14 @@
             font-weight: 600;
         }
         
-        .story-chapters {
-            color: #888;
-            transition: color 0.3s ease;
-        }
-        
-        .story-genre {
+        .story-exclusive {
+            font-size: 0.7rem;
+            background: #FF8C00;
+            color: white;
             padding: 2px 8px;
             border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
         }
         
-        .genre-romance {
-            background: var(--primary);
-        }
-        
-        .genre-fluff {
-            background: var(--secondary-1);
-        }
-        
-        .genre-angst {
-            background: var(--secondary-2);
-        }
-        
-        /* Sections */
-        .content-section {
-            margin-bottom: 40px;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 20px;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #333;
-            position: relative;
-            padding-left: 15px;
-            transition: color 0.3s ease;
-        }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 5px;
-            height: 25px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
-            border-radius: 5px;
-        }
-        
-        .section-link {
-            color: var(--secondary-2);
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .section-link:hover {
-            color: var(--primary);
-        }
-        
-        /* Banner */
-        .main-banner {
-            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
-            border-radius: 20px;
-            padding: 40px;
-            color: white;
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-            transition: background 0.3s ease;
-        }
-        
-        .main-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-        
-        .main-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            left: -10%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
-        }
-        
-        .banner-title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .banner-text {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            margin-bottom: 25px;
-            max-width: 500px;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .banner-btn {
-            background: white;
-            color: var(--primary);
-            border: none;
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .banner-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            color: var(--secondary-1);
-        }
-        
-        /* Genre Tags */
         .genre-tags {
             display: flex;
             flex-wrap: wrap;
@@ -376,54 +269,26 @@
             font-size: 1rem;
             transition: all 0.3s;
             cursor: pointer;
-            border: 2px solid transparent;
             color: white;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
-        .genre-tag.romance {
-            background: var(--primary);
-        }
-        
-        .genre-tag.fluff {
-            background: var(--secondary-1);
-        }
-        
-        .genre-tag.angst {
-            background: var(--secondary-2);
-        }
+        .genre-tag.romance { background: var(--primary); }
+        .genre-tag.fluff { background: var(--secondary-1); }
+        .genre-tag.angst { background: var(--secondary-2); }
         
         .genre-tag:hover, .genre-tag.active {
             transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            border-color: white;
+            filter: brightness(1.1);
         }
         
-        /* Genre Sections */
         .genre-section {
             margin-bottom: 40px;
             padding: 30px;
             border-radius: 20px;
             background: rgba(255,255,255,0.5);
             backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: background 0.3s ease;
-        }
-        
-        .genre-section.romance-section {
-            border-left: 5px solid var(--primary);
-        }
-        
-        .genre-section.fluff-section {
-            border-left: 5px solid var(--secondary-1);
-        }
-        
-        .genre-section.angst-section {
-            border-left: 5px solid var(--secondary-2);
+            scroll-margin-top: 80px;
         }
         
         .genre-section-title {
@@ -431,260 +296,105 @@
             font-weight: 800;
             margin-bottom: 30px;
             text-align: center;
-            width: 100%;
-            transition: color 0.3s ease;
         }
         
-        .genre-section-title.romance-title {
-            color: var(--primary);
+        .romance-title { color: var(--primary); }
+        .fluff-title { color: var(--secondary-1); }
+        .angst-title { color: var(--secondary-2); }
+        
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            justify-items: center;
         }
         
-        .genre-section-title.fluff-title {
-            color: var(--secondary-1);
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            position: relative;
+            padding-left: 15px;
         }
         
-        .genre-section-title.angst-title {
-            color: var(--secondary-2);
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 25px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary-1));
+            border-radius: 5px;
         }
         
-        /* Container cho 1 card */
-        .single-card-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-        
-        /* Task Card (cho công việc) */
-        .task-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s;
-            height: 100%;
-        }
-        
-        .task-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(136, 68, 153, 0.1);
-            border-color: var(--secondary-2);
-        }
-        
-        .task-priority {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: white;
-        }
-        
-        .priority-high {
-            background: var(--primary);
-        }
-        
-        .priority-medium {
-            background: var(--secondary-1);
-        }
-        
-        .priority-low {
-            background: var(--secondary-2);
-        }
-        
-        .task-title {
-            font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 8px;
-            color: #333;
-            transition: color 0.3s ease;
-        }
-        
-        .task-deadline {
-            font-size: 0.8rem;
-            color: #888;
-            margin-bottom: 10px;
-            transition: color 0.3s ease;
-        }
-        
-        .task-status {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
-        }
-        
-        .status-pending {
-            background: var(--accent-2);
-            color: #333;
-        }
-        
-        .status-done {
-            background: var(--accent-1);
-            color: #333;
-        }
-        
-        /* Footer */
         .footer {
             background: white;
             border-top: 1px solid var(--border-color);
             padding: 40px 0 20px;
             margin-top: 40px;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         
-        .footer h5 {
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 20px;
-            transition: color 0.3s ease;
-        }
-        
-        .footer ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .footer ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer ul li a {
-            color: #666;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer ul li a:hover {
-            color: var(--primary);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
+        .footer h5 { color: var(--primary); font-weight: 700; }
+        .footer ul { list-style: none; padding: 0; }
+        .footer ul li a { color: #666; text-decoration: none; }
+        .footer ul li a:hover { color: var(--primary); }
         
         .social-links a {
             width: 36px;
             height: 36px;
             border-radius: 50%;
             background: var(--accent-2);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             color: #333;
-            transition: all 0.3s;
-            text-decoration: none;
+            margin-right: 10px;
         }
         
-        .social-links a:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        /* Navbar với logo */
-        .main-nav .navbar-brand {
-            display: flex;
-            align-items: center;
-        }
-        
-        .main-nav .navbar-brand img {
-            transition: transform 0.3s ease;
-        }
-        
-        .main-nav .navbar-brand:hover img {
-            transform: scale(1.05);
-        }
-        
-        /* Responsive */
         @media (max-width: 768px) {
-            .banner-title {
-                font-size: 1.8rem;
-            }
-            
-            .main-banner {
-                padding: 30px 20px;
-            }
-            
-            .section-title {
-                font-size: 1.2rem;
-            }
-            
-            .genre-section-title {
-                font-size: 1.4rem;
-            }
-            
-            .genre-tag {
-                padding: 8px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .single-card-container {
-                max-width: 250px;
-            }
-            
-            .main-nav .navbar-brand img {
-                height: 32px;
-            }
-            
-            .main-nav .logo {
-                font-size: 1.4rem;
-            }
+            .banner-slide { height: 250px; }
+            .banner-content h2 { font-size: 1.5rem; }
+            .genre-section-title { font-size: 1.4rem; }
+            .genre-tag { padding: 8px 20px; font-size: 0.9rem; }
+            .stories-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+            .story-card { max-width: 220px; }
+        }
+        
+        @media (max-width: 480px) {
+            .stories-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+            .story-card { max-width: 180px; }
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg main-nav sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="assets/img/logo.png" alt="Đọc Truyện Online" height="40" class="me-2">
+                <img src="assets/img/logo.png" alt="Nightcord" height="40" class="me-2" onerror="this.style.display='none'">
                 <span class="logo">Nightcord</span>
             </a>
-            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="index.html">
-                            Trang chủ
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="tasks.html">
-                            Kho truyện
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="about.html">
-                            Thống kê
-                        </a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom active" href="index.html">Trang chủ</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom" href="add-story.html">Thêm truyện</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="tasks.html" style="display:none;">Kho truyện</a></li>
+                    <li class="nav-item"><a class="nav-link nav-link-custom admin-only" href="statistics.html" style="display:none;">Thống kê</a></li>
                 </ul>
-                
                 <div class="d-flex align-items-center gap-2">
-                    <!-- Dark mode button -->
-                    <button class="btn" id="darkModeToggle">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <!-- User dropdown -->
                     <div class="dropdown">
                         <button class="btn rounded-pill px-4" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1)); border: none; color: white;" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle me-2"></i>Tài khoản
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-sign-in-alt me-2"></i>Đăng nhập</a></li>
-                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#registerModal"><i class="fas fa-user-plus me-2"></i>Đăng ký</a></li>
+                            <li><a class="dropdown-item login-btn" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Cài đặt</a></li>
+                            <li><a class="dropdown-item admin-only" href="tasks.html" style="display:none;"><i class="fas fa-book me-2"></i>Kho truyện</a></li>
+                            <li><a class="dropdown-item admin-only" href="statistics.html" style="display:none;"><i class="fas fa-chart-bar me-2"></i>Thống kê</a></li>
+                            <li><a class="dropdown-item logout-btn" href="#" onclick="logout()" style="display:none;">Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>
@@ -692,285 +402,253 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container my-4">
-        <!-- Genre Tags - ĐÃ ĐỔI ROMANTIC → ROMANCE -->
-        <div class="genre-tags">
-            <span class="genre-tag romance active" data-genre="romance">ROMANCE</span>
-            <span class="genre-tag fluff" data-genre="fluff">FLUFF</span>
-            <span class="genre-tag angst" data-genre="angst">ANGST</span>
-        </div>
-
-        <!-- Banner Section -->
-        <div class="main-banner animate__animated animate__fadeIn">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="banner-title">Câu chuyện của bạn<br>bắt đầu từ đây</h1>
-                    <p class="banner-text">Khám phá thế giới qua những câu chuyện đầy cảm xúc.</p>
-                    <a href="tasks.html" class="btn banner-btn">
-                        Khám phá ngay
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Romance Section - ĐÃ ĐỔI ROMANTIC → ROMANCE -->
-        <div class="genre-section romance-section" id="romance-section">
-            <h2 class="genre-section-title romance-title">ROMANCE</h2>
-            
-            <div class="single-card-container">
-                <div class="story-card">
-                    <div class="story-cover">
-                        <span class="story-badge badge-romance">ROMANCE</span>
-                        <span class="story-rank">1</span>
-                        <img src="assets/img/placeholder.png" alt="They say I'm obsessed with you">
+        <!-- Banner Carousel 2 ảnh -->
+        <div id="bannerCarousel" class="carousel slide banner-carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="banner-slide" style="background-image: url('assets/img/banner1.png');">
+                        <div class="banner-content">
+                            <h2>Welcome to Nightcord</h2>
+                            <p>We have exclusive story to Nightcord only.</p>
+                            <a href="#romance-section" class="banner-btn">Let's go!</a>
+                        </div>
                     </div>
-                    <div class="story-info">
-                        <h3 class="story-title">They say I'm obsessed with you</h3>
-                        <div class="story-creator">EmoEnabler</div>
-                        <div class="story-meta">
-                            <span class="story-rating">★ 5.0</span>
-                            <span class="story-chapters">271 chap</span>
+                </div>
+                <div class="carousel-item">
+                    <div class="banner-slide" style="background-image: url('assets/img/banner2.png');">
+                        <div class="banner-content">
+                            <h2>Share your stories!</h2>
+                            <p>Upload and make your own story.</p>
+                            <a href="add-story.html" class="banner-btn">Add now</a>
                         </div>
                     </div>
                 </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <div class="genre-tags">
+            <span class="genre-tag romance active" data-target="romance-section">ROMANCE</span>
+            <span class="genre-tag fluff" data-target="fluff-section">FLUFF</span>
+            <span class="genre-tag angst" data-target="angst-section">ANGST</span>
+        </div>
+
+        <!-- Romance Section -->
+        <div class="genre-section" id="romance-section">
+            <h2 class="genre-section-title romance-title">ROMANCE</h2>
+            <div class="stories-grid" id="romance-container"></div>
         </div>
 
         <!-- Fluff Section -->
-        <div class="genre-section fluff-section" id="fluff-section">
+        <div class="genre-section" id="fluff-section">
             <h2 class="genre-section-title fluff-title">FLUFF</h2>
-            
-            <div class="single-card-container">
-                <div class="story-card">
-                    <div class="story-cover">
-                        <span class="story-badge badge-fluff">FLUFF</span>
-                        <span class="story-rank">2</span>
-                        <img src="assets/img/placeholder.png" alt="Bite down, right to the bone">
-                    </div>
-                    <div class="story-info">
-                        <h3 class="story-title">Bite down, right to the bone</h3>
-                        <div class="story-creator">EmoEnabler</div>
-                        <div class="story-meta">
-                            <span class="story-rating">★ 4.7</span>
-                            <span class="story-chapters">102 chap</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="stories-grid" id="fluff-container"></div>
         </div>
 
         <!-- Angst Section -->
-        <div class="genre-section angst-section" id="angst-section">
+        <div class="genre-section" id="angst-section">
             <h2 class="genre-section-title angst-title">ANGST</h2>
-            
-            <div class="single-card-container">
-                <div class="story-card">
-                    <div class="story-cover">
-                        <span class="story-badge badge-angst">ANGST</span>
-                        <span class="story-rank">3</span>
-                        <img src="assets/img/placeholder.png" alt="Searching For Change (in something that's dead)">
-                    </div>
-                    <div class="story-info">
-                        <h3 class="story-title">Searching For Change (in something that's dead)</h3>
-                        <div class="story-creator">EmoEnabler</div>
-                        <div class="story-meta">
-                            <span class="story-rating">★ 4.6</span>
-                            <span class="story-chapters">25 chap</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="stories-grid" id="angst-container"></div>
         </div>
 
-        <!-- Truyện mới cập nhật -->
-        <section class="content-section">
-            <div class="section-header">
-                <h2 class="section-title">Truyện mới cập nhật</h2>
-                <a href="tasks.html" class="section-link">Xem tất cả →</a>
+        <!-- Truyện độc quyền Nightcord -->
+        <section class="content-section mt-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title" style="font-size: 1.5rem; font-weight: 800; color: #FF8C00;">🌟 Độc quyền bởi Nightcord</h2>
             </div>
-            
-            <div class="row g-4" id="recentStoriesPreview">
-            </div>
+            <div class="row g-4" id="exclusiveStoriesPreview"></div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>Đọc Truyện Online</h5>
-                    <p>Ba thể loại chính: Romance, Fluff, Angst</p>
+                    <h5>Nightcord</h5>
+                    <p>Nơi hội tụ những câu chuyện độc quyền</p>
                 </div>
                 <div class="col-md-4">
-                    <h5>Liên kết nhanh</h5>
-                    <ul>
-                        <li><a href="index.html">Trang chủ</a></li>
-                        <li><a href="tasks.html">Kho truyện</a></li>
-                        <li><a href="about.html">Thống kê</a></li>
-                    </ul>
+                    <h5>Liên kết</h5>
+                    <ul><li><a href="index.html">Trang chủ</a></li><li><a href="add-story.html">Thêm truyện</a></li></ul>
                 </div>
                 <div class="col-md-4">
                     <h5>Theo dõi</h5>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                    </div>
+                    <div class="social-links"><a href="#"><i class="fab fa-facebook"></i></a><a href="#"><i class="fab fa-twitter"></i></a><a href="#"><i class="fab fa-github"></i></a></div>
                 </div>
             </div>
-            <div class="row mt-3">
-                <div class="col-12 text-center">
-                    <p class="mb-0">© 2024 Đọc Truyện Online - Romance • Fluff • Angst</p>
-                </div>
-            </div>
+            <div class="text-center mt-3"><p class="mb-0">© 2024 Nightcord - Độc quyền bởi Nightcord</p></div>
         </div>
     </footer>
 
     <!-- Modals -->
-    <!-- Login Modal -->
     <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1));">
-                    <h5 class="modal-title text-white">Đăng nhập</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Tên đăng nhập</label>
-                            <input type="text" class="form-control" placeholder="Nhập tên đăng nhập">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" placeholder="Nhập mật khẩu">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary" style="background: var(--primary);">Đăng nhập</button>
-                </div>
-            </div>
-        </div>
+        <div class="modal-dialog"><div class="modal-content">
+            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-1));"><h5 class="modal-title text-white">Đăng nhập</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body"><form><div class="mb-3"><label>Email</label><input type="email" id="loginEmail" class="form-control" placeholder="Email"></div><div class="mb-3"><label>Mật khẩu</label><input type="password" id="loginPassword" class="form-control" placeholder="Mật khẩu"></div></form></div>
+            <div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button><button class="btn btn-primary" onclick="handleLogin()">Đăng nhập</button></div>
+        </div></div>
     </div>
 
-    <!-- Register Modal -->
-    <div class="modal fade" id="registerModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header" style="background: linear-gradient(135deg, var(--secondary-2), var(--accent-2));">
-                    <h5 class="modal-title">Đăng ký</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Tên đăng nhập</label>
-                            <input type="text" class="form-control" placeholder="Nhập tên đăng nhập">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" class="form-control" placeholder="Nhập email">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" placeholder="Nhập mật khẩu">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-primary" style="background: var(--primary);">Đăng ký</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Toast Notification -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header" id="toastHeader">
-                <i class="fas fa-info-circle me-2" id="toastIcon"></i>
-                <strong class="me-auto" id="toastTitle">Thông báo</strong>
-                <small>vừa xong</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
-            </div>
-            <div class="toast-body" id="toastMessage">
-                Thao tác thành công!
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/storage.js"></script>
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/stories.js"></script>
     <script>
-        $(document).ready(function() {
-            loadRecentStories();
+        const ACCOUNTS = {
+            'admin@nightcord.com': { password: 'admin123', role: 'admin', name: 'Admin' },
+            'user@nightcord.com': { password: 'user123', role: 'user', name: 'User' }
+        };
+        
+        let currentUser = null;
+        
+        function initAuth() {
+            const user = localStorage.getItem('currentUser');
+            if (user) {
+                currentUser = JSON.parse(user);
+                $('.admin-only').show();
+                $('.logout-btn').show();
+                $('.login-btn').hide();
+                if (currentUser.role !== 'admin') $('.admin-only').hide();
+            } else {
+                currentUser = null;
+                $('.admin-only').hide();
+                $('.logout-btn').hide();
+                $('.login-btn').show();
+            }
+        }
+        
+        function handleLogin() {
+            const email = $('#loginEmail').val();
+            const password = $('#loginPassword').val();
+            const account = ACCOUNTS[email];
+            if (account && account.password === password) {
+                localStorage.setItem('currentUser', JSON.stringify({ email, role: account.role, name: account.name }));
+                $('#loginModal').modal('hide');
+                location.reload();
+            } else alert('Sai email hoặc mật khẩu!');
+        }
+        
+        function logout() { localStorage.removeItem('currentUser'); location.reload(); }
+        function openStory(storyId) { window.location.href = `story.html?id=${storyId}`; }
+        
+        function loadAllStories() {
+            const allStories = StoryService.getAllStories();
             
-            // Genre tag click - ĐÃ CẬP NHẬT CHO ROMANCE
+            // Truyện độc quyền
+            const exclusiveStories = allStories.filter(s => s.exclusive === true);
+            
+            // Tất cả truyện
+            const romanceStories = allStories.filter(s => s.genre === 'Romance' && !s.exclusive);
+            const fluffStories = allStories.filter(s => s.genre === 'Fluff' && !s.exclusive);
+            const angstStories = allStories.filter(s => s.genre === 'Angst' && !s.exclusive);
+            
+            //  Romance section
+            let romanceHtml = '';
+            romanceStories.forEach((story, index) => {
+                romanceHtml += renderStoryCard(story, index + 1);
+            });
+            $('#romance-container').html(romanceHtml || '<div class="text-center w-100">Chưa có truyện Romance</div>');
+            
+            // Fluff section
+            let fluffHtml = '';
+            fluffStories.forEach((story, index) => {
+                fluffHtml += renderStoryCard(story, index + 1);
+            });
+            $('#fluff-container').html(fluffHtml || '<div class="text-center w-100">Chưa có truyện Fluff</div>');
+            
+            // Angst section
+            let angstHtml = '';
+            angstStories.forEach((story, index) => {
+                angstHtml += renderStoryCard(story, index + 1);
+            });
+            $('#angst-container').html(angstHtml || '<div class="text-center w-100">Chưa có truyện Angst</div>');
+            
+            // truyện độc quyền
+            let exclusiveHtml = '';
+            exclusiveStories.forEach(story => {
+                exclusiveHtml += renderExclusiveCard(story);
+            });
+            $('#exclusiveStoriesPreview').html(exclusiveHtml || '<div class="col-12 text-center">Chưa có truyện độc quyền</div>');
+        }
+        
+        function renderStoryCard(story, rank) {
+            let badgeClass = '';
+            let badgeText = '';
+            
+            if (story.genre === 'Romance') {
+                badgeClass = 'badge-romance';
+                badgeText = 'Romance';
+            } else if (story.genre === 'Fluff') {
+                badgeClass = 'badge-fluff';
+                badgeText = 'Fluff';
+            } else {
+                badgeClass = 'badge-angst';
+                badgeText = 'Angst';
+            }
+            
+            return `
+                <div class="story-card" onclick="openStory('${story.id}')">
+                    <div class="story-cover">
+                        <span class="story-badge ${badgeClass}">${badgeText}</span>
+                        <span class="story-rank">${rank}</span>
+                        <img src="${story.coverImage || 'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${story.title}">
+                    </div>
+                    <div class="story-info">
+                        <h3 class="story-title">${escapeHtml(story.title)}</h3>
+                        <div class="story-creator">${escapeHtml(story.author)}</div>
+                        <div class="story-meta">
+                            <span class="story-rating">★ ${story.rating}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderExclusiveCard(story) {
+            return `
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="story-card" onclick="openStory('${story.id}')">
+                        <div class="story-cover">
+                            <span class="story-badge badge-exclusive">ĐỘC QUYỀN</span>
+                            <img src="${story.coverImage || 'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${story.title}">
+                        </div>
+                        <div class="story-info">
+                            <h3 class="story-title">${escapeHtml(story.title)}</h3>
+                            <div class="story-creator">${escapeHtml(story.author)}</div>
+                            <div class="story-meta">
+                                <span class="story-rating">★ ${story.rating}</span>
+                                <span class="story-exclusive">Nightcord</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Hàm escape HTML để tránh XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        $(document).ready(function() {
+            initAuth();
+            loadAllStories();
+            
             $('.genre-tag').click(function() {
                 $('.genre-tag').removeClass('active');
                 $(this).addClass('active');
-                
-                const genre = $(this).data('genre');
-                // Ánh xạ genre sang id section
-                const sectionId = genre === 'romance' ? 'romance-section' : genre + '-section';
-                $('html, body').animate({
-                    scrollTop: $(`#${sectionId}`).offset().top - 100
-                }, 500);
+                const targetId = $(this).data('target');
+                $('html, body').animate({ scrollTop: $(`#${targetId}`).offset().top - 80 }, 500);
             });
         });
-        
-        // Load recent stories
-        function loadRecentStories() {
-            const stories = StoryService.getStories();
-            const recentStories = stories.slice(0, 4);
-            
-            let html = '';
-            if (recentStories.length > 0) {
-                recentStories.forEach(story => {
-                    const badgeClass = story.genre === 'Romance' ? 'badge-romance' : 
-                                      story.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst';
-                    
-                    html += `
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="story-card">
-                                <div class="story-cover">
-                                    <span class="story-badge ${badgeClass}">${story.genre}</span>
-                                    <img src="${story.coverImage || 'assets/img/placeholder.png'}" alt="${story.title}">
-                                </div>
-                                <div class="story-info">
-                                    <h3 class="story-title">${story.title}</h3>
-                                    <div class="story-creator">${story.author}</div>
-                                    <div class="story-meta">
-                                        <span class="story-rating">★ ${story.rating || '4.5'}</span>
-                                        <span class="story-chapters">${story.chapters || 0} chap</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-            } else {
-                html = `
-                    <div class="col-12 text-center py-5">
-                        <img src="assets/img/empty.svg" alt="No stories" style="max-width: 150px;">
-                        <h5 class="mt-3" style="color: var(--secondary-2);">Chưa có truyện nào</h5>
-                        <p>Hãy thêm truyện mới trong kho truyện!</p>
-                        <a href="tasks.html" class="btn btn-primary" style="background: var(--primary);">Đến kho truyện</a>
-                    </div>
-                `;
-            }
-            
-            $('#recentStoriesPreview').html(html);
-        }
     </script>
 </body>
 </html>
