@@ -9,37 +9,99 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        :root { --primary: #884499; --secondary-1: #BB5688; --border-color: #eaeaea; }
+        :root { 
+            --primary: #884499; 
+            --secondary-1: #BB5688; 
+            --secondary-2: #8888CC;
+            --accent-1: #CCAA88;
+            --accent-2: #DDAACC;
+            --border-color: #eaeaea; 
+        }
         body { background: #f2f2f2; font-family: 'Inter', sans-serif; }
         .main-nav { background: white; border-bottom: 1px solid var(--border-color); padding: 0.5rem 0; }
         .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .story-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.03); transition: all 0.3s ease; border: 1px solid var(--border-color); height: 100%; cursor: pointer; margin-bottom: 20px; }
-        .story-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(136, 68, 153, 0.1); border-color: var(--secondary-2); }
-        .story-cover { position: relative; aspect-ratio: 3/4; overflow: hidden; }
-        .story-cover img { width: 100%; height: 100%; object-fit: cover; }
-        .story-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: white; z-index: 2; }
+        .story-card { 
+            background: white; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+            transition: all 0.3s ease; 
+            border: 1px solid var(--border-color); 
+            height: 100%; 
+            cursor: pointer; 
+            margin-bottom: 20px; 
+        }
+        .story-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 30px rgba(136, 68, 153, 0.1); 
+            border-color: var(--secondary-2); 
+        }
+        .story-cover { position: relative; aspect-ratio: 3/4; overflow: hidden; background: #f5f5f5; }
+        .story-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .story-card:hover .story-cover img { transform: scale(1.05); }
+        .story-badge { 
+            position: absolute; 
+            top: 10px; 
+            left: 10px; 
+            padding: 4px 10px; 
+            border-radius: 20px; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            color: white; 
+            z-index: 2; 
+        }
         .badge-romance { background: var(--primary); }
         .badge-fluff { background: var(--secondary-1); }
         .badge-angst { background: var(--secondary-2); }
         .badge-exclusive { background: #FF8C00; }
+        .badge-user { background: #6c757d; }
+        .story-rank {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent-2);
+            color: #333;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         .story-info { padding: 15px; }
-        .story-title { font-weight: 700; font-size: 1rem; margin-bottom: 5px; color: #333; }
+        .story-title { font-weight: 700; font-size: 1rem; margin-bottom: 5px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .story-creator { font-size: 0.8rem; color: #888; margin-bottom: 8px; }
         .story-meta { display: flex; align-items: center; gap: 10px; font-size: 0.75rem; flex-wrap: wrap; }
         .story-rating { color: #FFB800; font-weight: 600; }
         .story-chapters { color: #888; }
         .story-exclusive { font-size: 0.7rem; background: #FF8C00; color: white; padding: 2px 8px; border-radius: 12px; }
+        .story-user-badge { font-size: 0.7rem; background: #6c757d; color: white; padding: 2px 8px; border-radius: 12px; }
         .filter-section { background: white; border-radius: 16px; padding: 20px; margin-bottom: 30px; border: 1px solid var(--border-color); }
         .btn-primary { background: var(--primary); border-color: var(--primary); }
+        .btn-primary:hover { background: #6a3677; border-color: #6a3677; }
         .admin-card { background: white; border-radius: 20px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--border-color); }
+        .table-view { overflow-x: auto; }
+        .story-table-img { width: 50px; height: 70px; object-fit: cover; border-radius: 6px; }
+        .view-toggle { display: flex; gap: 10px; margin-bottom: 20px; }
+        .view-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border-color); background: white; cursor: pointer; transition: all 0.3s; }
+        .view-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         @media (max-width: 768px) { .filter-section .row > div { margin-bottom: 15px; } }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg main-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2"><span class="logo">Nightcord Admin</span></a>
-            <div class="ms-auto"><button class="btn btn-outline-danger" onclick="logout()">Logout</button></div>
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="assets/img/logo.png" height="40" class="me-2" onerror="this.style.display='none'">
+                <span class="logo">Nightcord Admin</span>
+            </a>
+            <div class="ms-auto">
+                <button class="btn btn-outline-danger" onclick="logout()">Logout</button>
+            </div>
         </div>
     </nav>
 
@@ -53,41 +115,238 @@
             <h4 class="mb-3" style="color: #FF8C00;"><i class="fas fa-crown me-2"></i>Add Nightcord Exclusive Story</h4>
             <form id="adminStoryForm">
                 <div class="row">
-                    <div class="col-md-6 mb-3"><label class="form-label">Story title *</label><input type="text" class="form-control" id="adminTitle" required></div>
-                    <div class="col-md-6 mb-3"><label class="form-label">Author *</label><input type="text" class="form-control" id="adminAuthor" required></div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Story Title *</label>
+                        <input type="text" class="form-control" id="adminTitle" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Author *</label>
+                        <input type="text" class="form-control" id="adminAuthor" required>
+                    </div>
                 </div>
-                <div class="mb-3"><label class="form-label">Description *</label><textarea class="form-control" id="adminDescription" rows="2" required></textarea></div>
+                <div class="mb-3">
+                    <label class="form-label">Description * (min. 10 characters)</label>
+                    <textarea class="form-control" id="adminDescription" rows="2" required></textarea>
+                </div>
                 <div class="row">
-                    <div class="col-md-4 mb-3"><label class="form-label">Genre</label><select class="form-select" id="adminGenre"><option>Romance</option><option>Fluff</option><option>Angst</option></select></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Number of chapters</label><input type="number" class="form-control" id="adminChapters" value="1"></div>
-                    <div class="col-md-4 mb-3"><label class="form-label">Rating</label><input type="number" class="form-control" id="adminRating" step="0.1" value="4.5"></div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Genre</label>
+                        <select class="form-select" id="adminGenre">
+                            <option>Romance</option>
+                            <option>Fluff</option>
+                            <option>Angst</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Number of Chapters</label>
+                        <input type="number" class="form-control" id="adminChapters" value="1" min="1">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Rating</label>
+                        <input type="number" class="form-control" id="adminRating" step="0.1" value="4.5" min="0" max="5">
+                    </div>
                 </div>
-                <div class="mb-3"><label class="form-label">Cover image URL</label><input type="text" class="form-control" id="adminCover" placeholder="assets/img/placeholder.png"></div>
-                <div class="mb-3"><label class="form-label">Story content *</label><textarea class="form-control" id="adminContent" rows="4" required></textarea></div>
-                <button type="button" class="btn btn-primary" onclick="addExclusiveStory()"><i class="fas fa-save me-2"></i>Add exclusive story</button>
+                <div class="mb-3">
+                    <label class="form-label">Cover Image URL</label>
+                    <input type="text" class="form-control" id="adminCover" placeholder="assets/img/placeholder.png">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Story Content * (min. 20 characters)</label>
+                    <textarea class="form-control" id="adminContent" rows="6" required></textarea>
+                </div>
+                <button type="button" class="btn btn-primary w-100" onclick="addExclusiveStory()">
+                    <i class="fas fa-save me-2"></i>Add Exclusive Story
+                </button>
             </form>
         </div>
 
-        <!-- Filter and story list -->
+        <!-- Filter section -->
         <div class="filter-section">
             <div class="row g-3">
-                <div class="col-md-4"><label class="form-label fw-bold">🔍 Search</label><input type="text" class="form-control" id="searchInput" placeholder="Story title, author..."></div>
-                <div class="col-md-3"><label class="form-label fw-bold">📚 Genre</label><select class="form-select" id="filterGenre"><option value="all">All</option><option value="Romance">Romance</option><option value="Fluff">Fluff</option><option value="Angst">Angst</option></select></div>
-                <div class="col-md-3"><label class="form-label fw-bold">🏷️ Source</label><select class="form-select" id="filterSource"><option value="all">All</option><option value="exclusive">Nightcord Exclusive</option><option value="default">Default stories</option><option value="user">User stories</option></select></div>
-                <div class="col-md-2 d-flex align-items-end"><button class="btn btn-outline-secondary w-100" onclick="clearFilters()">Clear filters</button></div>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">🔍 Search</label>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Story title, author...">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">📚 Genre</label>
+                    <select class="form-select" id="filterGenre">
+                        <option value="all">All</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Fluff">Fluff</option>
+                        <option value="Angst">Angst</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">🏷️ Source</label>
+                    <select class="form-select" id="filterSource">
+                        <option value="all">All</option>
+                        <option value="exclusive">Nightcord Exclusive</option>
+                        <option value="default">Default Stories</option>
+                        <option value="user">User Stories</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-outline-secondary w-100" onclick="clearFilters()">Clear Filters</button>
+                </div>
             </div>
         </div>
 
-        <div id="storiesContainer" class="row g-4"></div>
-        <div id="emptyState" class="text-center py-5" style="display:none;"><img src="assets/img/empty.svg" style="max-width: 150px;"><h4 class="mt-3">No stories found</h4></div>
-        <div class="d-flex justify-content-between align-items-center mt-4"><div><span id="showingInfo"></span></div><nav><ul class="pagination" id="pagination"></ul></nav></div>
+        <!-- View toggle -->
+        <div class="view-toggle">
+            <button class="view-btn active" id="cardViewBtn" onclick="toggleView('card')">
+                <i class="fas fa-th-large me-1"></i> Card View
+            </button>
+            <button class="view-btn" id="tableViewBtn" onclick="toggleView('table')">
+                <i class="fas fa-table me-1"></i> Table View
+            </button>
+        </div>
+
+        <!-- Card View -->
+        <div id="cardView" class="view-container">
+            <div class="row g-4" id="storiesContainer"></div>
+        </div>
+
+        <!-- Table View -->
+        <div id="tableView" class="view-container" style="display: none;">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead style="background: linear-gradient(135deg, var(--primary), var(--secondary-2)); color: white;">
+                        <tr>
+                            <th>#</th>
+                            <th>Cover</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th>Rating</th>
+                            <th>Chapters</th>
+                            <th>Source</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="storyTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="text-center py-5" style="display:none;">
+            <img src="assets/img/empty.svg" style="max-width: 150px;">
+            <h4 class="mt-3">No stories found</h4>
+            <p>Try adjusting your filters or add a new story!</p>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div><span id="showingInfo"></span></div>
+            <nav><ul class="pagination" id="pagination"></ul></nav>
+        </div>
     </main>
+
+    <!-- Edit Story Modal -->
+    <div class="modal fade" id="editStoryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header" style="background: linear-gradient(135deg, var(--primary), var(--secondary-2));">
+                    <h5 class="modal-title text-white"><i class="fas fa-edit me-2"></i>Edit Story</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editStoryForm">
+                        <input type="hidden" id="editStoryId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Story Title *</label>
+                                <input type="text" class="form-control" id="editTitle" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Author *</label>
+                                <input type="text" class="form-control" id="editAuthor" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description *</label>
+                            <textarea class="form-control" id="editDescription" rows="2" required></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Genre</label>
+                                <select class="form-select" id="editGenre">
+                                    <option>Romance</option>
+                                    <option>Fluff</option>
+                                    <option>Angst</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Chapters</label>
+                                <input type="number" class="form-control" id="editChapters" min="1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Rating</label>
+                                <input type="number" class="form-control" id="editRating" step="0.1" min="0" max="5">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cover Image URL</label>
+                            <input type="text" class="form-control" id="editCoverImage">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Story Content</label>
+                            <textarea class="form-control" id="editContent" rows="6"></textarea>
+                        </div>
+                        <div class="mb-3 form-check" id="exclusiveCheckbox" style="display:none;">
+                            <input type="checkbox" class="form-check-input" id="editExclusive">
+                            <label class="form-check-label">Nightcord Exclusive</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateStory()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong id="deleteStoryTitle"></strong>?</p>
+                    <p class="text-danger"><small>This action cannot be undone!</small></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert">
+            <div class="toast-header" id="toastHeader">
+                <i class="fas fa-info-circle me-2" id="toastIcon"></i>
+                <strong class="me-auto" id="toastTitle">Notification</strong>
+                <small>just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="toastMessage"></div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/storage.js"></script>
     <script>
         let currentStories = [], filteredStories = [], currentPage = 1, itemsPerPage = 8;
+        let currentView = 'card';
+        let deleteId = null;
         
         function initAuth() {
             const user = localStorage.getItem('currentUser');
@@ -101,6 +360,25 @@
         function logout() { localStorage.removeItem('currentUser'); window.location.href = 'index.html'; }
         function openStory(id) { window.location.href = `story.html?id=${id}`; }
         
+        function showToast(type, message) {
+            const toast = new bootstrap.Toast($('#liveToast')[0]);
+            if (type === 'success') {
+                $('#toastHeader').css('background', 'var(--secondary-2)');
+                $('#toastIcon').removeClass().addClass('fas fa-check-circle me-2 text-white');
+                $('#toastTitle').text('Success');
+            } else if (type === 'warning') {
+                $('#toastHeader').css('background', 'var(--secondary-1)');
+                $('#toastIcon').removeClass().addClass('fas fa-trash me-2 text-white');
+                $('#toastTitle').text('Deleted');
+            } else {
+                $('#toastHeader').css('background', 'var(--primary)');
+                $('#toastIcon').removeClass().addClass('fas fa-info-circle me-2 text-white');
+                $('#toastTitle').text('Notification');
+            }
+            $('#toastMessage').text(message);
+            toast.show();
+        }
+        
         function addExclusiveStory() {
             const title = $('#adminTitle').val().trim();
             const author = $('#adminAuthor').val().trim();
@@ -109,6 +387,14 @@
             
             if (!title || !author || !description || !content) {
                 alert('Please fill in all required information!');
+                return;
+            }
+            if (description.length < 10) {
+                alert('Description must be at least 10 characters!');
+                return;
+            }
+            if (content.length < 20) {
+                alert('Story content must be at least 20 characters!');
                 return;
             }
             
@@ -124,11 +410,14 @@
                 exclusive: true,
                 userCreated: false,
                 createdAt: new Date().toISOString(),
+                publishDate: new Date().toISOString().split('T')[0],
+                status: 'Ongoing',
+                priority: 'High',
                 content: content
             };
             
             StoryService.addStory(story);
-            alert('Exclusive story added successfully!');
+            showToast('success', 'Exclusive story added successfully!');
             $('#adminStoryForm')[0].reset();
             loadStories();
         }
@@ -158,28 +447,175 @@
         
         function renderStories() {
             const start = (currentPage-1)*itemsPerPage, end = start+itemsPerPage, page = filteredStories.slice(start,end);
+            
+            if (filteredStories.length === 0) {
+                $('#emptyState').show();
+                $('#cardView, #tableView').hide();
+            } else {
+                $('#emptyState').hide();
+                if (currentView === 'card') {
+                    $('#cardView').show();
+                    $('#tableView').hide();
+                    renderCardView(page, start);
+                } else {
+                    $('#cardView').hide();
+                    $('#tableView').show();
+                    renderTableView(page, start);
+                }
+            }
+            $('#showingInfo').text(`Showing ${start+1}-${Math.min(end,filteredStories.length)} of ${filteredStories.length} stories`);
+        }
+        
+        function renderCardView(stories, start) {
             let html = '';
-            page.forEach(s => {
+            stories.forEach((s, idx) => {
                 let badgeClass, badgeText;
-                if (s.exclusive) { badgeClass = 'badge-exclusive'; badgeText = 'EXCLUSIVE'; }
-                else if (s.userCreated) { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre + ' (User)'; }
-                else { badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; badgeText = s.genre; }
+                if (s.exclusive) { 
+                    badgeClass = 'badge-exclusive'; 
+                    badgeText = 'EXCLUSIVE'; 
+                } else if (s.userCreated) { 
+                    badgeClass = 'badge-user'; 
+                    badgeText = 'USER'; 
+                } else { 
+                    badgeClass = s.genre === 'Romance' ? 'badge-romance' : s.genre === 'Fluff' ? 'badge-fluff' : 'badge-angst'; 
+                    badgeText = s.genre; 
+                }
                 
-                html += `<div class="col-lg-3 col-md-4 col-sm-6"><div class="story-card" onclick="openStory('${s.id}')"><div class="story-cover"><span class="story-badge ${badgeClass}">${badgeText}</span><img src="${s.coverImage||'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${s.title}"></div><div class="story-info"><h3 class="story-title">${s.title}</h3><div class="story-creator">${s.author}</div><div class="story-meta"><span class="story-rating">★ ${s.rating}</span><span class="story-chapters">${s.chapters} chap</span>${s.exclusive ? '<span class="story-exclusive">Nightcord</span>' : ''}</div></div></div></div>`;
+                html += `
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="story-card" onclick="openStory('${s.id}')">
+                            <div class="story-cover">
+                                <span class="story-badge ${badgeClass}">${badgeText}</span>
+                                <span class="story-rank">${start + idx + 1}</span>
+                                <img src="${s.coverImage||'assets/img/placeholder.png'}" onerror="this.src='assets/img/placeholder.png'" alt="${s.title}">
+                            </div>
+                            <div class="story-info">
+                                <h3 class="story-title">${escapeHtml(s.title)}</h3>
+                                <div class="story-creator">${escapeHtml(s.author)}</div>
+                                <div class="story-meta">
+                                    <span class="story-rating">★ ${s.rating}</span>
+                                    <span class="story-chapters">${s.chapters} ch</span>
+                                    ${s.exclusive ? '<span class="story-exclusive">Nightcord</span>' : ''}
+                                    ${s.userCreated ? '<span class="story-user-badge">User</span>' : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
             $('#storiesContainer').html(html);
-            $('#emptyState').toggle(filteredStories.length===0);
-            $('#showingInfo').text(`Showing ${start+1}-${Math.min(end,filteredStories.length)} of ${filteredStories.length} stories`);
+        }
+        
+        function renderTableView(stories, start) {
+            let html = '';
+            stories.forEach((s, idx) => {
+                let sourceBadge = '';
+                if (s.exclusive) sourceBadge = '<span class="badge" style="background: #FF8C00;">Exclusive</span>';
+                else if (s.userCreated) sourceBadge = '<span class="badge" style="background: #6c757d;">User</span>';
+                else sourceBadge = '<span class="badge" style="background: #17a2b8;">Default</span>';
+                
+                html += `
+                    <tr>
+                        <td>${start + idx + 1}</td>
+                        <td><img src="${s.coverImage||'assets/img/placeholder.png'}" class="story-table-img" onerror="this.src='assets/img/placeholder.png'"></td>
+                        <td><strong>${escapeHtml(s.title)}</strong></td>
+                        <td>${escapeHtml(s.author)}</td>
+                        <td><span class="badge" style="background: ${getGenreColor(s.genre)};">${s.genre}</span></td>
+                        <td>★ ${s.rating}</td>
+                        <td>${s.chapters}</td>
+                        <td>${sourceBadge}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="openEditModal('${s.id}')"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="openDeleteModal('${s.id}', '${s.title.replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            $('#storyTableBody').html(html);
+        }
+        
+        function getGenreColor(genre) {
+            const colors = { 'Romance': 'var(--primary)', 'Fluff': 'var(--secondary-1)', 'Angst': 'var(--secondary-2)' };
+            return colors[genre] || 'var(--primary)';
+        }
+        
+        function openEditModal(id) {
+            const story = currentStories.find(s => s.id === id);
+            if (story) {
+                $('#editStoryId').val(story.id);
+                $('#editTitle').val(story.title);
+                $('#editAuthor').val(story.author);
+                $('#editDescription').val(story.description || '');
+                $('#editGenre').val(story.genre);
+                $('#editChapters').val(story.chapters);
+                $('#editRating').val(story.rating);
+                $('#editCoverImage').val(story.coverImage || '');
+                $('#editContent').val(story.content || '');
+                if (story.exclusive !== undefined) {
+                    $('#exclusiveCheckbox').show();
+                    $('#editExclusive').prop('checked', story.exclusive);
+                } else {
+                    $('#exclusiveCheckbox').hide();
+                }
+                $('#editStoryModal').modal('show');
+            }
+        }
+        
+        function updateStory() {
+            const id = $('#editStoryId').val();
+            const updatedStory = {
+                title: $('#editTitle').val(),
+                author: $('#editAuthor').val(),
+                description: $('#editDescription').val(),
+                genre: $('#editGenre').val(),
+                chapters: parseInt($('#editChapters').val()),
+                rating: parseFloat($('#editRating').val()),
+                coverImage: $('#editCoverImage').val() || 'assets/img/placeholder.png',
+                content: $('#editContent').val(),
+                exclusive: $('#editExclusive').is(':checked')
+            };
+            
+            StoryService.updateStory(id, updatedStory);
+            showToast('success', 'Story updated successfully!');
+            $('#editStoryModal').modal('hide');
+            loadStories();
+        }
+        
+        function openDeleteModal(id, title) {
+            deleteId = id;
+            $('#deleteStoryTitle').text(title);
+            $('#deleteModal').modal('show');
+        }
+        
+        function confirmDelete() {
+            if (deleteId) {
+                StoryService.deleteStory(deleteId);
+                showToast('warning', 'Story deleted!');
+                $('#deleteModal').modal('hide');
+                loadStories();
+            }
         }
         
         function updatePagination() {
             let pages = Math.ceil(filteredStories.length/itemsPerPage), html='';
-            for(let i=1;i<=pages;i++) html+=`<li class="page-item ${i===currentPage?'active':''}"><a class="page-link" href="#" onclick="changePage(${i});return false;">${i}</a></li>`;
+            if (pages > 1) {
+                html += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage-1});return false;">«</a></li>`;
+                for(let i=1;i<=pages;i++) html+=`<li class="page-item ${i===currentPage?'active':''}"><a class="page-link" href="#" onclick="changePage(${i});return false;">${i}</a></li>`;
+                html += `<li class="page-item ${currentPage === pages ? 'disabled' : ''}"><a class="page-link" href="#" onclick="changePage(${currentPage+1});return false;">»</a></li>`;
+            }
             $('#pagination').html(html);
         }
         
         function changePage(p) { currentPage=p; renderStories(); }
         function clearFilters() { $('#searchInput').val(''); $('#filterGenre').val('all'); $('#filterSource').val('all'); applyFilters(); }
+        function toggleView(view) { currentView = view; 
+            $('#cardViewBtn, #tableViewBtn').removeClass('active');
+            if(view === 'card') $('#cardViewBtn').addClass('active');
+            else $('#tableViewBtn').addClass('active');
+            renderStories(); 
+        }
+        
+        function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
         
         $(document).ready(()=>{ initAuth(); loadStories(); $('#searchInput, #filterGenre, #filterSource').on('input change', applyFilters); });
     </script>
