@@ -1,5 +1,3 @@
-// stories.js - Xử lý CRUD, Tìm kiếm, Lọc, Sắp xếp cho truyện
-
 // Biến toàn cục
 let currentStories = [];
 let filteredStories = [];
