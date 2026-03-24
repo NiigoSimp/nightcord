@@ -9,220 +9,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        :root { 
-            --primary: #884499; 
-            --secondary-1: #BB5688; 
-            --border-color: #eaeaea;
-            --bg-color: #f2f2f2;
-            --card-bg: #ffffff;
-        }
-        body { background: var(--bg-color); font-family: 'Inter', sans-serif; }
+        :root { --primary: #884499; --secondary-1: #BB5688; --border-color: #eaeaea; }
+        body { background: #f2f2f2; font-family: 'Inter', sans-serif; }
         .main-nav { background: white; border-bottom: 1px solid var(--border-color); padding: 0.5rem 0; }
         .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary-1)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .reader-container { max-width: 900px; margin: 40px auto; background: white; border-radius: 24px; padding: 48px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        .story-title { font-size: 2.2rem; font-weight: 800; margin-bottom: 15px; color: var(--primary); }
-        .story-meta { color: #888; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); display: flex; gap: 20px; flex-wrap: wrap; }
-        .story-content { line-height: 1.9; font-size: 1.05rem; color: #333; white-space: pre-wrap; font-family: 'Georgia', serif; }
-        .story-content p { margin-bottom: 1.5rem; }
+        .reader-container { max-width: 800px; margin: 40px auto; background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .story-title { font-size: 2rem; font-weight: 800; margin-bottom: 10px; }
+        .story-meta { color: #888; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .story-content { line-height: 1.8; font-size: 1.1rem; color: #333; white-space: pre-wrap; }
         .exclusive-badge { background: #FF8C00; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
         .user-badge { background: var(--secondary-1); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
-        .sample-badge { background: #17a2b8; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; display: inline-block; margin-left: 10px; }
-        .chapter-nav { background: #f8f9fa; padding: 15px 20px; border-radius: 16px; margin: 30px 0; text-align: center; border: 1px solid var(--border-color); }
-        .chapter-nav a { margin: 0 15px; color: var(--primary); text-decoration: none; font-weight: 500; }
-        .chapter-nav a:hover { color: var(--secondary-1); text-decoration: underline; }
-        .nav-links { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-        .btn-outline-secondary:hover { background: var(--primary); border-color: var(--primary); color: white; }
-        .btn-primary { background: var(--primary); border-color: var(--primary); }
-        .btn-primary:hover { background: #6a3677; border-color: #6a3677; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(136, 68, 153, 0.3); }
-        @media (max-width: 768px) { 
-            .reader-container { padding: 24px; margin: 20px; } 
-            .story-title { font-size: 1.6rem; }
-            .story-content { font-size: 0.95rem; }
-            .chapter-nav a { margin: 0 8px; font-size: 0.9rem; }
-        }
+        @media (max-width: 768px) { .reader-container { padding: 20px; } .story-title { font-size: 1.5rem; } }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg main-nav sticky-top">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
-                <img src="assets/img/logo.png" height="40" class="me-2" onerror="this.style.display='none'">
-                <span class="logo">Nightcord</span>
-            </a>
-            <div class="ms-auto">
-                <a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại</a>
-            </div>
+            <a class="navbar-brand d-flex align-items-center" href="index.html"><img src="assets/img/logo.png" height="40" class="me-2"><span class="logo">Nightcord</span></a>
         </div>
     </nav>
 
     <div class="container reader-container">
         <div id="storyContent"></div>
-        
-        <div class="chapter-nav">
-            <a href="#" id="prevChapter"><i class="fas fa-chevron-left me-2"></i>Chương trước</a>
-            <span class="mx-3">|</span>
-            <a href="#" id="nextChapter">Chương tiếp theo<i class="fas fa-chevron-right ms-2"></i></a>
-        </div>
-        
-        <div class="nav-links">
-            <a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-home me-2"></i>Về trang chủ</a>
-            <a href="add-story.html" class="btn btn-primary"><i class="fas fa-plus me-2"></i>Thêm truyện mới</a>
-        </div>
+        <div class="text-center mt-4"><a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại trang chủ</a></div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="assets/js/storage.js"></script>
     <script>
-        let currentStory = null;
-        let currentChapter = 1;
-        let totalChapters = 1;
-        
-        function getStoryId() { 
-            const params = new URLSearchParams(window.location.search); 
-            return params.get('id'); 
-        }
-        
-        // Hàm để phân chia nội dung thành các chương
-        function splitIntoChapters(content) {
-            if (!content) return ['Nội dung đang được cập nhật...'];
-            
-            // Tìm các dấu hiệu chương (Chương 1:, Chapter 1:, ---, v.v.)
-            const chapterMarkers = [
-                /Chương\s+(\d+)[:\s-]/gi,
-                /Chapter\s+(\d+)[:\s-]/gi,
-                /---\s*Chương\s+(\d+)\s*---/gi,
-                /Phần\s+(\d+)[:\s-]/gi
-            ];
-            
-            let chapters = [];
-            let currentPos = 0;
-            let matches = [];
-            
-            // Tìm tất cả vị trí bắt đầu chương
-            for (const marker of chapterMarkers) {
-                const regex = new RegExp(marker.source, 'gi');
-                let match;
-                while ((match = regex.exec(content)) !== null) {
-                    matches.push({ index: match.index, chapterNum: parseInt(match[1]) });
-                }
-            }
-            
-            // Sắp xếp theo vị trí
-            matches.sort((a, b) => a.index - b.index);
-            
-            if (matches.length > 0) {
-                for (let i = 0; i < matches.length; i++) {
-                    const start = matches[i].index;
-                    const end = i < matches.length - 1 ? matches[i + 1].index : content.length;
-                    let chapterContent = content.substring(start, end).trim();
-                    chapters.push(chapterContent);
-                }
-            } else {
-                // Nếu không tìm thấy dấu hiệu chương, trả về toàn bộ nội dung
-                chapters = [content];
-            }
-            
-            return chapters;
-        }
+        function getStoryId() { const params = new URLSearchParams(window.location.search); return params.get('id'); }
         
         function loadStory() {
             const id = getStoryId();
-            currentStory = StoryService.getStoryById(id);
-            
-            if (!currentStory) { 
-                document.getElementById('storyContent').innerHTML = '<h2 class="text-center">Không tìm thấy truyện</h2>'; 
-                return; 
-            }
-            
-            // Phân chia nội dung thành các chương
-            const chapters = splitIntoChapters(currentStory.content || 'Nội dung đang được cập nhật...');
-            totalChapters = chapters.length;
-            currentStory.chaptersList = chapters;
-            
-            // Lấy số chương từ URL nếu có
-            const urlParams = new URLSearchParams(window.location.search);
-            const chapterParam = urlParams.get('chapter');
-            if (chapterParam && !isNaN(parseInt(chapterParam))) {
-                currentChapter = Math.min(Math.max(1, parseInt(chapterParam)), totalChapters);
-            } else {
-                currentChapter = 1;
-            }
-            
-            renderChapter(currentChapter);
-            updateChapterNav();
-        }
-        
-        function renderChapter(chapterNum) {
-            if (!currentStory || !currentStory.chaptersList) return;
-            
-            const chapterIndex = chapterNum - 1;
-            if (chapterIndex < 0 || chapterIndex >= currentStory.chaptersList.length) return;
+            const story = StoryService.getStoryById(id);
+            if (!story) { document.getElementById('storyContent').innerHTML = '<h2 class="text-center">Không tìm thấy truyện</h2>'; return; }
             
             let badge = '';
-            if (currentStory.exclusive) badge = '<span class="exclusive-badge">Độc quyền Nightcord</span>';
-            else if (currentStory.userCreated) badge = '<span class="user-badge">Truyện người dùng</span>';
-            else badge = '<span class="sample-badge">Truyện mẫu</span>';
-            
-            const chapterContent = currentStory.chaptersList[chapterIndex];
+            if (story.exclusive) badge = '<span class="exclusive-badge">Độc quyền Nightcord</span>';
+            else if (story.userCreated) badge = '<span class="user-badge">Truyện người dùng</span>';
             
             document.getElementById('storyContent').innerHTML = `
-                <h1 class="story-title">${escapeHtml(currentStory.title)} ${badge}</h1>
-                <div class="story-meta">
-                    <span><i class="fas fa-user me-1"></i>Tác giả: ${escapeHtml(currentStory.author)}</span>
-                    <span><i class="fas fa-tag me-1"></i>Thể loại: ${escapeHtml(currentStory.genre)}</span>
-                    <span><i class="fas fa-star me-1" style="color: #FFB800;"></i>${currentStory.rating}</span>
-                    <span><i class="fas fa-book me-1"></i>Chương ${chapterNum}/${totalChapters}</span>
-                </div>
-                <div class="story-content">${chapterContent.replace(/\n/g, '<br>')}</div>
+                <h1 class="story-title">${story.title} ${badge}</h1>
+                <div class="story-meta">Tác giả: ${story.author} | Thể loại: ${story.genre} | ${story.chapters} chương | ★ ${story.rating}</div>
+                <div class="story-content">${(story.content || 'Nội dung đang được cập nhật...').replace(/\n/g, '<br>')}</div>
             `;
-            
-            // Cập nhật URL với số chương
-            const url = new URL(window.location.href);
-            url.searchParams.set('chapter', chapterNum);
-            window.history.replaceState({}, '', url);
         }
         
-        function updateChapterNav() {
-            $('#prevChapter').off('click').on('click', function(e) {
-                e.preventDefault();
-                if (currentChapter > 1) {
-                    currentChapter--;
-                    renderChapter(currentChapter);
-                }
-            });
-            
-            $('#nextChapter').off('click').on('click', function(e) {
-                e.preventDefault();
-                if (currentChapter < totalChapters) {
-                    currentChapter++;
-                    renderChapter(currentChapter);
-                }
-            });
-            
-            // Disable nếu không còn chương
-            if (currentChapter <= 1) {
-                $('#prevChapter').css('opacity', '0.5').css('pointer-events', 'none');
-            } else {
-                $('#prevChapter').css('opacity', '1').css('pointer-events', 'auto');
-            }
-            
-            if (currentChapter >= totalChapters) {
-                $('#nextChapter').css('opacity', '0.5').css('pointer-events', 'none');
-            } else {
-                $('#nextChapter').css('opacity', '1').css('pointer-events', 'auto');
-            }
-        }
-        
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        $(document).ready(function() { 
-            loadStory(); 
-        });
+        $(document).ready(()=>{ loadStory(); });
     </script>
 </body>
 </html>
